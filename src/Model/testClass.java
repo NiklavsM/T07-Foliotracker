@@ -1,8 +1,10 @@
+package Model;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class testClass {
-
+/*
 	public static void main(String[] args) {
 		try {
 
@@ -19,4 +21,5 @@ public class testClass {
 			System.err.println(e);
 		}
 	}
+	*/
 }

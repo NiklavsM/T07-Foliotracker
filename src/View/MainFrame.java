@@ -1,9 +1,11 @@
+package View;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    public void mainFrame() {
+    public MainFrame() {
         JPanel panel = new JPanel();
         JButton button = new JButton("Add");
         JLabel label1 = new JLabel("Ticketer Symbol:");
@@ -19,12 +21,6 @@ public class MainFrame extends JFrame {
         this.add(panel);
         this.setSize(800,300);
         this.setVisible(true);
-    }
-
-
-    public static void main(String[] args){
-        MainFrame mainframe = new MainFrame();
-        mainframe.mainFrame();
     }
 
 

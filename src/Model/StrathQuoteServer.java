@@ -1,9 +1,10 @@
+package Model;
 
 import java.net.*;
 import java.io.*;
 
 /**
- * StrathQuoteServer is a utility class that allows calling code to retrieve the
+ * Model.StrathQuoteServer is a utility class that allows calling code to retrieve the
  * latest market value of a given stock by ticker symbol. The QuoteServer
  * obtains the stock value by using the website: <a
  * href="http://www.tickertech.com"> <tt>http://www.tickertech.com</tt> </a>
@@ -17,7 +18,7 @@ import java.io.*;
  * York Stock Exchange (NYSE) or NASDAQ.
  */
 
-public class StrathQuoteServer {
+public class StrathQuoteServer implements IQuoteServer{
 
     protected static final String _URL = "http://www.tickertech.com/cgi/?ticker=";
 
@@ -36,13 +37,13 @@ public class StrathQuoteServer {
      *           with a period separating dollars and cents (eg, "120.50" for
      *           one hundred and twenty dollars and fifty cents) <BR>
      *           unless tickerSymbol is not a valid NYSE or NASDAQ symbol, when
-     *           throws NoSuchTickerException <br>
+     *           throws Model.NoSuchTickerException <br>
      *           or unless an error connecting to the website or some other
-     *           error occurs, when throws WebsiteDataException <BR>
+     *           error occurs, when throws Model.WebsiteDataException <BR>
      *           The amount returned may contain commas, for example, "2,243.87"
      *           <br>
      */
-    public static String getLastValue(String tickerSymbol)
+    public String getLastValue(String tickerSymbol)
             throws WebsiteDataException, NoSuchTickerException {
         _TOKEN1 = _TOKEN1a + tickerSymbol.toUpperCase() + _TOKEN1b;
         String strURLStart = _URL;
