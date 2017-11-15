@@ -124,14 +124,21 @@ public class MainView implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof IPortfolioContainer) {
-            for (IPortfolio portfolio : ((IPortfolioContainer)arg).getPortfolioList()) {
+        if (arg instanceof IPortfolio) {
                 PortfolioPanel newTab = new PortfolioPanel();
-                tabs.addTab(portfolio.getName(), newTab);
+                tabs.addTab(((IPortfolio)arg).getName(), newTab);
                 System.out.println("TEST2.08");
-                PortfolioController portfolioController = new PortfolioController(newTab,portfolio);
+                PortfolioController portfolioController = new PortfolioController(newTab,(IPortfolio)arg);
                 portfolioControllers.add(portfolioController);
-            }
         }
+//        if (arg instanceof IPortfolioContainer) {
+//            for (IPortfolio portfolio : ((IPortfolioContainer)arg).getPortfolioList()) {
+//                PortfolioPanel newTab = new PortfolioPanel();
+//                tabs.addTab(portfolio.getName(), newTab);
+//                System.out.println("TEST2.08");
+//                PortfolioController portfolioController = new PortfolioController(newTab,portfolio);
+//                portfolioControllers.add(portfolioController);
+//            }
+//        }
     }
 }

@@ -17,7 +17,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         Portfolio newPortfolio1 = new Portfolio(portfolio);
         portfolioList.add(newPortfolio1);
         setChanged();
-        notifyObservers(this);
+        notifyObservers(newPortfolio1);
         System.out.println("Gets here");
     }
 

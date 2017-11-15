@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.AddSharesThread;
 import Model.IPortfolio;
 import View.PortfolioPanel;
 
@@ -18,7 +19,9 @@ public class PortfolioController {
 
     void setUpAddButton() {
         portfolioPanel.getAddButton().addActionListener(e -> {
-            portfolio.addStock(portfolioPanel.getInputTickerName().getText(), portfolioPanel.getInputShareAmount().getText());
+            Thread addShares = new Thread(new AddSharesThread(portfolio,portfolioPanel.getInputTickerName().getText(),portfolioPanel.getInputShareAmount().getText()));
+            addShares.start();
+            //portfolio.addStock(portfolioPanel.getInputTickerName().getText(), portfolioPanel.getInputShareAmount().getText());
         });
     }
 }
