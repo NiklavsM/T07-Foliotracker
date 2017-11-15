@@ -1,23 +1,26 @@
 package Controller;
 
-import Model.IQuoteServer;
-import Model.StrathQuoteServer;
+import Model.IPortfolioContainer;
 import View.MainView;
 
-public class Controller {
-    IQuoteServer quoteServer;
-    MainView mainView;
+import javax.swing.*;
 
-    public Controller(IQuoteServer sqs, MainView mv) {
-        quoteServer = sqs;
+public class Controller {
+    private MainView mainView;
+    private IPortfolioContainer portfolioContainer;
+
+    public Controller(IPortfolioContainer pc, MainView mv) {
+    //    quoteServer = sqs;
         mainView = mv;
-        setValue();
+        portfolioContainer = pc;
+        pc.addObserver(mv);
+        //setValue();
         setupCreateNew();
     }
 
     private void setValue() {
         try {
-            mainView.getCurrentPriceTest().setText(quoteServer.getLastValue("MSFT"));
+           // mainView.getCurrentPriceTest().setText(quoteServer.getLastValue("MSFT"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +28,19 @@ public class Controller {
 
     private void setupCreateNew() {
         mainView.getCreateNew().addActionListener(e -> {
-            mainView.getCurrentPriceTest().setText("YEah");
+            String s = (String) JOptionPane.showInputDialog(
+                    mainView.getMainFrame(),
+                    "Portfolio name:",
+                    "New Portfolio",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null, null);
+
+            if ((s != null) && (s.length() > 0)) {
+                portfolioContainer.addToPortfolioList(s);
+               // mainView.addTab(s);
+                return;
+            }
         });
     }
 }

@@ -1,9 +1,19 @@
 package View;
 
-import javax.swing.*;
-import java.awt.*;
+import Controller.PortfolioController;
+import Model.IPortfolio;
+import Model.IPortfolioContainer;
+import Model.Portfolio;
+import Model.PortfolioContainer;
 
-public class MainView {
+import javax.swing.*;
+import java.awt.CardLayout;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+public class MainView implements Observer {
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -14,8 +24,9 @@ public class MainView {
     JMenuItem openNew;
     JButton refreshPrice;
     JLabel currentPriceTest;
+    List<PortfolioController> portfolioControllers = new ArrayList<>();
 
-    public MainView() {
+    public MainView(IPortfolioContainer pc) {
         mainFrame = new JFrame();
         mainPanel = new JPanel(new CardLayout());
         refreshPrice = new JButton("Refresh price");
@@ -25,12 +36,12 @@ public class MainView {
 
         currentPriceTest = new JLabel("No price");// just testing delete latter
 
-        addTab("Portfolio 1");
         mainPanel.add(tabs);
         mainPanel.add(refreshPrice);
         mainFrame.add(mainPanel);
         mainFrame.setBounds(500, 200, 825, 710);
         mainFrame.setVisible(true);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void initializeMenuBar() {
@@ -39,20 +50,6 @@ public class MainView {
         optionsMenu = new JMenu("Options");
         menuBar.add(optionsMenu);
         createNew = new JMenuItem("Create New");
-        createNew.addActionListener(e -> {
-            String s = (String) JOptionPane.showInputDialog(
-                    mainFrame,
-                    "Portfolio name:",
-                    "New Portfolio",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    null, null);
-
-            if ((s != null) && (s.length() > 0)) {
-                addTab(s);
-                return;
-            }
-        });
         optionsMenu.add(createNew);
         openNew = new JMenuItem("Open");
         optionsMenu.add(openNew);
@@ -125,4 +122,16 @@ public class MainView {
         return currentPriceTest;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof IPortfolioContainer) {
+            for (IPortfolio portfolio : ((IPortfolioContainer)arg).getPortfolioList()) {
+                PortfolioPanel newTab = new PortfolioPanel();
+                tabs.addTab(portfolio.getName(), newTab);
+                System.out.println("TEST2.08");
+                PortfolioController portfolioController = new PortfolioController(newTab,portfolio);
+                portfolioControllers.add(portfolioController);
+            }
+        }
+    }
 }

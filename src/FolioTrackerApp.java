@@ -1,12 +1,11 @@
 import Controller.Controller;
-import Model.IQuoteServer;
-import Model.StrathQuoteServer;
+import Model.PortfolioContainer;
 import View.MainView;
 
 public class FolioTrackerApp {
     public static void main(String[] args){
-        IQuoteServer sqs = new StrathQuoteServer();
-        MainView mainView = new MainView();
-        Controller controller = new Controller(sqs,mainView);
+        PortfolioContainer pc = new PortfolioContainer();
+        MainView mainView = new MainView(pc);
+        Controller controller = new Controller(pc,mainView);
     }
 }
