@@ -23,12 +23,11 @@ public class MainView {
         initializeMenuBar();
         tabs = new JTabbedPane();
 
-        currentPriceTest = new JLabel("No price");
-        JPanel tab1 = new JPanel(new CardLayout());
+        currentPriceTest = new JLabel("No price");// just testing delete latter
+
         addTab("Portfolio 1");
         mainPanel.add(tabs);
         mainPanel.add(refreshPrice);
-        //mainPanel.add(currentPriceTest);
         mainFrame.add(mainPanel);
         mainFrame.setBounds(500, 200, 825, 710);
         mainFrame.setVisible(true);
@@ -49,7 +48,6 @@ public class MainView {
                     null,
                     null, null);
 
-//If a string was returned, say so.
             if ((s != null) && (s.length() > 0)) {
                 addTab(s);
                 return;

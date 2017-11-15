@@ -23,18 +23,23 @@ public class PortfolioPanel extends JPanel {
     }
 
     private void setAddStock() {
-        TextField inputPortfolioName = new TextField("", 20);
-        inputPortfolioName.setBounds(100, 20, 100, 20);
+        JLabel tickerNameLabel = new JLabel("Ticker name");
+        tickerNameLabel.setBounds(100, 20, 100, 20);
+        TextField inputTickerName = new TextField("MSFT", 20);
+        inputTickerName.setBounds(200, 20, 100, 20);
+        JLabel shareAmountLabel = new JLabel("Ticker name");
+        shareAmountLabel.setBounds(300, 20, 100, 20);
         TextField inputShareAmount = new TextField("", 20);
-        inputShareAmount.setBounds(200, 20, 100, 20);
+        inputShareAmount.setBounds(400, 20, 100, 20);
         addButton = new JButton("Add");
         addButton.addActionListener(e -> {
-            addStock(inputPortfolioName.getText(), inputShareAmount.getText());
+            addStock(inputTickerName.getText(), inputShareAmount.getText());
         });
-        addButton.setBounds(300, 20, 100, 20);
+        addButton.setBounds(500, 20, 100, 20);
 
-
-        add(inputPortfolioName);
+        add(tickerNameLabel);
+        add(shareAmountLabel);
+        add(inputTickerName);
         add(inputShareAmount);
         add(addButton);
     }
@@ -72,7 +77,7 @@ public class PortfolioPanel extends JPanel {
             String pricePerShare = qs.getLastValue(tickerSymbol);
             Double totalValueInteger = Double.valueOf(numberOfShares) * Double.valueOf(pricePerShare);
             String totalValue = totalValueInteger.toString();
-            model.addRow(new Object[]{tickerSymbol, numberOfShares, pricePerShare,totalValue});
+            model.addRow(new Object[]{tickerSymbol, numberOfShares, pricePerShare, totalValue});
         } catch (Exception e) {
             e.printStackTrace();
         }
