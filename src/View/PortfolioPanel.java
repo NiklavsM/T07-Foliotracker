@@ -13,6 +13,7 @@ public class PortfolioPanel extends JPanel implements Observer {
     private DefaultTableModel model;
     private JButton addButton;
     private JButton closeButton;
+    private JButton deleteButton;
     private TextField inputTickerName;
     private TextField inputShareAmount;
     private JTabbedPane parentTabPane;
@@ -46,13 +47,16 @@ public class PortfolioPanel extends JPanel implements Observer {
 
         addButton.setBounds(530, 20, 100, 20);
         closeButton = new JButton("Close");
-        closeButton.setBounds(400, 580, 120, 20);
+        closeButton.setBounds(250, 580, 120, 20);
+        deleteButton = new JButton("Delete");
+        deleteButton.setBounds(400, 580, 120, 20);
 
         add(tickerNameLabel);
         add(shareAmountLabel);
         add(inputTickerName);
         add(inputShareAmount);
         add(addButton);
+        add(deleteButton);
         add(closeButton);
     }
 
@@ -78,7 +82,7 @@ public class PortfolioPanel extends JPanel implements Observer {
         table.setEnabled(false);
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
         table.setRowSorter(sorter);
-        scrollPane.setBounds(20, 240, 750, 300);
+        scrollPane.setBounds(20, 100, 750, 300);
         scrollPane.setViewportView(table);
         add(scrollPane);
         //  }
@@ -92,6 +96,10 @@ public class PortfolioPanel extends JPanel implements Observer {
     }
 
     public void setupCloseButton(JTabbedPane tp){
+      //  int index = tabPane.indexOfTab(this);
+        closeButton = new JButton("Close");
+        closeButton.setBounds(400, 580, 120, 20);
+       // tp.settab
         closeButton.addActionListener(e->{
             int i = tp.indexOfTabComponent(this.table);
             //parentTabPane.remove(0);

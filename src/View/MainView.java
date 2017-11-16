@@ -20,6 +20,7 @@ public class MainView implements Observer {
     JMenu optionsMenu;
     JMenuItem createNew;
     JMenuItem openNew;
+    JMenuItem exitApp;
     JButton refreshPrice;
     JLabel currentPriceTest;
     List<PortfolioController> portfolioControllers = new ArrayList<>();
@@ -51,6 +52,8 @@ public class MainView implements Observer {
         optionsMenu.add(createNew);
         openNew = new JMenuItem("Open");
         optionsMenu.add(openNew);
+        exitApp = new JMenuItem("Exit");
+        optionsMenu.add(exitApp);
         mainFrame.setJMenuBar(menuBar);
 
     }
