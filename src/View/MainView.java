@@ -3,11 +3,9 @@ package View;
 import Controller.PortfolioController;
 import Model.IPortfolio;
 import Model.IPortfolioContainer;
-import Model.Portfolio;
-import Model.PortfolioContainer;
 
 import javax.swing.*;
-import java.awt.CardLayout;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -57,10 +55,10 @@ public class MainView implements Observer {
 
     }
 
-    public void addTab(String name) {
-        PortfolioPanel newTab = new PortfolioPanel();
-        tabs.addTab(name, newTab);
-    }
+//    public void addTab(String name) {
+//        PortfolioPanel newTab = new PortfolioPanel();
+//        tabs.addTab(name, newTab);
+//    }
 
     public JFrame getMainFrame() {
         return mainFrame;
@@ -125,11 +123,12 @@ public class MainView implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof IPortfolio) {
-                PortfolioPanel newTab = new PortfolioPanel();
-                tabs.addTab(((IPortfolio)arg).getName(), newTab);
-                System.out.println("TEST2.08");
-                PortfolioController portfolioController = new PortfolioController(newTab,(IPortfolio)arg);
-                portfolioControllers.add(portfolioController);
+            PortfolioPanel newTab = new PortfolioPanel(tabs);
+            tabs.addTab(((IPortfolio) arg).getName(), newTab);
+            newTab.setParentTabPane(tabs);
+            System.out.println("TEST2.08");
+            PortfolioController portfolioController = new PortfolioController(newTab, (IPortfolio) arg);
+            portfolioControllers.add(portfolioController);
         }
 //        if (arg instanceof IPortfolioContainer) {
 //            for (IPortfolio portfolio : ((IPortfolioContainer)arg).getPortfolioList()) {

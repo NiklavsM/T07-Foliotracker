@@ -12,15 +12,25 @@ public class PortfolioPanel extends JPanel implements Observer {
     private JTable table;
     private DefaultTableModel model;
     private JButton addButton;
+    private JButton closeButton;
     private TextField inputTickerName;
     private TextField inputShareAmount;
+    private JTabbedPane parentTabPane;
 
-    public PortfolioPanel() {
+    public PortfolioPanel(final JTabbedPane tabPane) {
         setLayout(null);
 
-
+        //parentTabPane = tabPane;
+        System.out.println(parentTabPane);
         setAddStock();
         initializeTable();
+        //setUpCloseButton();
+    }
+
+    public void setParentTabPane(JTabbedPane tp){
+        parentTabPane = tp;
+        System.out.println("Does this");
+        setupCloseButton(tp);
     }
 
     private void setAddStock() {
@@ -28,21 +38,22 @@ public class PortfolioPanel extends JPanel implements Observer {
         tickerNameLabel.setBounds(100, 20, 100, 20);
         inputTickerName = new TextField("MSFT", 20);
         inputTickerName.setBounds(200, 20, 100, 20);
-        JLabel shareAmountLabel = new JLabel("Ticker name");
-        shareAmountLabel.setBounds(300, 20, 100, 20);
+        JLabel shareAmountLabel = new JLabel("Number of shares");
+        shareAmountLabel.setBounds(300, 20, 120, 20);
         inputShareAmount = new TextField("", 20);
-        inputShareAmount.setBounds(400, 20, 100, 20);
+        inputShareAmount.setBounds(420, 20, 100, 20);
         addButton = new JButton("Add");
-//        addButton.addActionListener(e -> {
-//            addStock(inputTickerName.getText(), inputShareAmount.getText());
-//        });
-        addButton.setBounds(500, 20, 100, 20);
+
+        addButton.setBounds(530, 20, 100, 20);
+        closeButton = new JButton("Close");
+        closeButton.setBounds(400, 580, 120, 20);
 
         add(tickerNameLabel);
         add(shareAmountLabel);
         add(inputTickerName);
         add(inputShareAmount);
         add(addButton);
+        add(closeButton);
     }
 
     private void initializeTable() {
@@ -76,11 +87,28 @@ public class PortfolioPanel extends JPanel implements Observer {
     public void addStock(String tickerSymbol, String numberOfShares, String pricePerShare, String totalValue) {
 
         model.addRow(new Object[]{tickerSymbol, numberOfShares, pricePerShare, totalValue});
+        System.out.println("TESST plese work " + parentTabPane.indexOfTabComponent(PortfolioPanel.this));
 
+    }
+
+    public void setupCloseButton(JTabbedPane tp){
+        closeButton.addActionListener(e->{
+            int i = tp.indexOfTabComponent(this.table);
+            //parentTabPane.remove(0);
+            System.out.println(this + "DOG2" + i);
+            if (i != -1) {
+                System.out.println("DOG1");
+                tp.remove(i);
+            }
+        });
     }
 
     public JTable getTable() {
         return table;
+    }
+
+    public JButton getCloseButton() {
+        return closeButton;
     }
 
     public void setTable(JTable table) {

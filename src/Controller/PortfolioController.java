@@ -24,4 +24,10 @@ public class PortfolioController {
             //portfolio.addStock(portfolioPanel.getInputTickerName().getText(), portfolioPanel.getInputShareAmount().getText());
         });
     }
+
+//    void SetUpCloseButton(){
+//        portfolioPanel.getCloseButton().addActionListener(e->{
+//
+//        });
+//    }
 }
