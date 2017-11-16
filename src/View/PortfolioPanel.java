@@ -14,8 +14,11 @@ public class PortfolioPanel extends JPanel implements Observer {
     private JButton addButton;
     private JButton closeButton;
     private JButton deleteButton;
+    private JButton sellButton;
     private TextField inputTickerName;
     private TextField inputShareAmount;
+    private TextField sellTickerName;
+    private TextField sellTickerShareAmount;
     private JTabbedPane parentTabPane;
 
     public PortfolioPanel(final JTabbedPane tabPane) {
@@ -24,6 +27,7 @@ public class PortfolioPanel extends JPanel implements Observer {
         //parentTabPane = tabPane;
         System.out.println(parentTabPane);
         setAddStock();
+        setSellStock();
         initializeTable();
         //setUpCloseButton();
     }
@@ -43,7 +47,7 @@ public class PortfolioPanel extends JPanel implements Observer {
         shareAmountLabel.setBounds(300, 20, 120, 20);
         inputShareAmount = new TextField("", 20);
         inputShareAmount.setBounds(420, 20, 100, 20);
-        addButton = new JButton("Add");
+        addButton = new JButton("Buy");
 
         addButton.setBounds(530, 20, 100, 20);
         closeButton = new JButton("Close");
@@ -58,6 +62,26 @@ public class PortfolioPanel extends JPanel implements Observer {
         add(addButton);
         add(deleteButton);
         add(closeButton);
+    }
+
+    private void setSellStock(){
+        JLabel sellTickerNameLabel = new JLabel("Ticker name");
+        sellTickerNameLabel.setBounds(100, 50, 100, 20);
+        sellTickerName = new TextField("MSFT", 20);
+        sellTickerName.setBounds(200, 50, 100, 20);
+        JLabel sellAmountLabel = new JLabel("Number of shares");
+        sellAmountLabel.setBounds(300, 50, 120, 20);
+        sellTickerShareAmount = new TextField("", 20);
+        sellTickerShareAmount.setBounds(420, 50, 100, 20);
+        sellButton = new JButton("Sell");
+        sellButton.setBounds(530, 50, 100, 20);
+
+        add(sellTickerNameLabel);
+        add(sellTickerName);
+        add(sellAmountLabel);
+        add(sellTickerShareAmount);
+        add(sellButton);
+
     }
 
     private void initializeTable() {
