@@ -1,13 +1,17 @@
 package View;
 
+import Model.IPortfolio;
+import Model.IStockHolding;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class PortfolioPanel extends JPanel implements Observer {
+public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
 
     private JTable table;
     private DefaultTableModel model;
@@ -112,9 +116,9 @@ public class PortfolioPanel extends JPanel implements Observer {
         //  }
     }
 
-    public void addStock(String tickerSymbol, String numberOfShares, String pricePerShare, String totalValue) {
+    public void addStock(IStockHolding sh) {
 
-        model.addRow(new Object[]{tickerSymbol, numberOfShares, pricePerShare, totalValue});
+        model.addRow(new Object[]{sh.getTickerSymbol(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
         System.out.println("TESST plese work " + parentTabPane.indexOfTabComponent(PortfolioPanel.this));
 
     }
@@ -155,6 +159,14 @@ public class PortfolioPanel extends JPanel implements Observer {
         this.model = model;
     }
 
+    public TextField getSellTickerName() {
+        return sellTickerName;
+    }
+
+    public TextField getSellTickerShareAmount() {
+        return sellTickerShareAmount;
+    }
+
     public JButton getAddButton() {
         return addButton;
     }
@@ -175,6 +187,11 @@ public class PortfolioPanel extends JPanel implements Observer {
         return inputShareAmount;
     }
 
+    @Override
+    public AbstractButton getSellButton() {
+        return sellButton;
+    }
+
     public void setInputShareAmount(TextField inputShareAmount) {
         this.inputShareAmount = inputShareAmount;
     }
@@ -186,13 +203,17 @@ public class PortfolioPanel extends JPanel implements Observer {
         }
     }
 
+    public void popupErrorMessage(String errorText){
+        JOptionPane.showMessageDialog(null, errorText);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof String[][]) {
+        if (arg instanceof IPortfolio) {
             clearTable();
-            String[][] stockArray = (String[][]) arg;
-            for (int i = 0; i < stockArray.length; i++) {
-                addStock(stockArray[i][0], stockArray[i][1], stockArray[i][2], stockArray[i][3]);
+            List<IStockHolding> stockArray = ((IPortfolio) arg).getStocks();
+            for (IStockHolding sh : stockArray) {
+                addStock(sh);
             }
         }
     }

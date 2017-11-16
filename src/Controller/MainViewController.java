@@ -1,19 +1,19 @@
 package Controller;
 
 import Model.IPortfolioContainer;
+import View.IMainView;
 import View.MainView;
 
 import javax.swing.*;
 
-public class Controller {
-    private MainView mainView;
+public class MainViewController {
+    private IMainView mainView;
     private IPortfolioContainer portfolioContainer;
 
-    public Controller(IPortfolioContainer pc, MainView mv) {
+    public MainViewController(IPortfolioContainer pc, IMainView mv) {
     //    quoteServer = sqs;
         mainView = mv;
         portfolioContainer = pc;
-        pc.addObserver(mv);
         //setValue();
         setupCreateNew();
     }

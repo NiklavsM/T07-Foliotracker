@@ -44,7 +44,7 @@ public class StrathQuoteServer{
      *           <br>
      */
     public static String getLastValue(String tickerSymbol)
-            throws WebsiteDataException, NoSuchTickerException {
+            throws WebsiteDataException {
         _TOKEN1 = _TOKEN1a + tickerSymbol.toUpperCase() + _TOKEN1b;
         String strURLStart = _URL;
         URL urlWebPage = null;
@@ -102,20 +102,3 @@ public class StrathQuoteServer{
     }
 }
 
-class WebsiteDataException extends Exception {
-    WebsiteDataException() {
-    }
-
-    WebsiteDataException(String s) {
-        super(s);
-    }
-}
-
-class NoSuchTickerException extends Exception {
-    NoSuchTickerException() {
-    }
-
-    NoSuchTickerException(String s) {
-        super(s);
-    }
-}

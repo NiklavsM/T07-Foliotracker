@@ -6,12 +6,15 @@ import Model.IPortfolioContainer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MainView implements Observer {
+public class MainView implements Observer,IMainView {
 
     JFrame mainFrame;
     JPanel mainPanel;
@@ -27,7 +30,10 @@ public class MainView implements Observer {
 
     public MainView(IPortfolioContainer pc) {
         mainFrame = new JFrame();
+        mainFrame.setTitle("FolioTracker");
+
         mainPanel = new JPanel(new CardLayout());
+
         refreshPrice = new JButton("Refresh price");
 
         initializeMenuBar();
@@ -53,6 +59,11 @@ public class MainView implements Observer {
         openNew = new JMenuItem("Open");
         optionsMenu.add(openNew);
         exitApp = new JMenuItem("Exit");
+        exitApp.setMnemonic(KeyEvent.VK_X);
+        exitApp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
+        exitApp.addActionListener(e->{
+            mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
+        });
         optionsMenu.add(exitApp);
         mainFrame.setJMenuBar(menuBar);
 
@@ -130,6 +141,7 @@ public class MainView implements Observer {
             tabs.addTab(((IPortfolio) arg).getName(), newTab);
             newTab.setParentTabPane(tabs);
             System.out.println("TEST2.08");
+            ((IPortfolio) arg).addObserver(newTab);
             PortfolioController portfolioController = new PortfolioController(newTab, (IPortfolio) arg);
             portfolioControllers.add(portfolioController);
         }
