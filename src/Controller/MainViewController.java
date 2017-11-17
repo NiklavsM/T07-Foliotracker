@@ -28,6 +28,7 @@ public class MainViewController {
                 mainView.popupErrorMessage("Please enter portfolio's name");
                 return;
             }
+            s = s.toLowerCase();
             tabCount = mainView.getTabs().getTabCount();
             for (int i = 0; i < tabCount; i++) {
                 if (mainView.getTabs().getTitleAt(i).equals(s)) {
@@ -55,6 +56,7 @@ public class MainViewController {
                 mainView.popupErrorMessage("Please enter portfolio's name");
                 return;
             }
+            s = s.toLowerCase();
             if (portfolioContainer.containsPortfolio(s)) {
                 mainView.popupErrorMessage("Portfolio already exists");
                 return;

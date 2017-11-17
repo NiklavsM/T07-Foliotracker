@@ -22,7 +22,7 @@ public class PortfolioController {
     void setupAddButton() {
         portfolioPanel.getAddButton().addActionListener(e -> {
             Double shareAmount = 0.0;
-            String tickerSymbol = portfolioPanel.getBuyTickerName().getText();
+            String tickerSymbol = portfolioPanel.getBuyTickerName().getText().toLowerCase();
             try {
                 shareAmount = Double.valueOf(portfolioPanel.getBuyShareAmount().getText());
 //                Thread addShares = new Thread(new AddSharesThread(portfolio,portfolioPanel.getInputTickerName().getText(),shareAmount));
@@ -44,6 +44,7 @@ public class PortfolioController {
     void setupSellButton() {
         portfolioPanel.getSellButton().addActionListener(e -> {
             Double shareAmount = null;
+            String tickerSymbol = portfolioPanel.getSellTickerName().getText().toLowerCase();
             try {
                 shareAmount = Double.valueOf(portfolioPanel.getSellTickerShareAmount().getText());
             } catch (NumberFormatException ex) {
@@ -54,7 +55,7 @@ public class PortfolioController {
                 portfolioPanel.popupErrorMessage("Sell amount has to be positive integer");
                 return;
             }
-            if (!portfolio.sellStock(portfolioPanel.getSellTickerName().getText(), shareAmount)) {
+            if (!portfolio.sellStock(tickerSymbol, shareAmount)) {
                 portfolioPanel.popupErrorMessage("You do not own this stock");
             }
         });
