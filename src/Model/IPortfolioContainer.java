@@ -8,6 +8,8 @@ public interface IPortfolioContainer {
     List<Portfolio> getPortfolioList();
 
     void addToPortfolioList(String portfolio);
-
-    void addObserver(Observer o);
+    //IPortfolio getPortfolioBytName(String name);
+    boolean containsPortfolio(String name);
+    String[] getPortfolioNames();
+    void deletePortfolio(String portfolioName);//change to String as i thnk it wont delete it
 }

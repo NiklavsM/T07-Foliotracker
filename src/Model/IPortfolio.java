@@ -6,8 +6,8 @@ import java.util.Observer;
 public interface IPortfolio {
     String getName();
     void addObserver(Observer o);
-    void buyStock(String tickerSymbol, Double numberOfShares) throws WebsiteDataException;
+    boolean buyStock(String tickerSymbol, Double numberOfShares);
     List<IStockHolding> getStocks();
-
+void notifyChanges();
     boolean sellStock(String tickerSymbol, Double amount);
 }

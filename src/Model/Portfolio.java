@@ -41,11 +41,15 @@ public class Portfolio extends Observable implements IPortfolio {
             if (stockHolding.getNumberOfShares() <= 0) {
                 removeStock(tickerSymbol);
             }
-            setChanged();
-            notifyObservers(this);
+            notifyChanges();
             return true;
         }
         return false;
+    }
+
+    public void notifyChanges(){
+        setChanged();
+        notifyObservers(this);
     }
 
     private IStockHolding getStockFromContainer(String tickerSymbol) {
@@ -61,19 +65,23 @@ public class Portfolio extends Observable implements IPortfolio {
         stocks.remove(getStockFromContainer(tickerSymbol));
     }
 
-    public void buyStock(String tickerName, Double shareAmount) throws WebsiteDataException {
+    public boolean buyStock(String tickerName, Double shareAmount) {
         System.out.println("TEST2.1");
         IStockHolding sh = getStockFromContainer(tickerName);
-        if (sh != null) {
-            sh.buyShares(shareAmount);
-        } else {
-            IStockHolding newStock = new StockHolding(tickerName, shareAmount);
-            newStock.updateShareValue();
-            newStock.updateValueOfHolding();
-            stocks.add(newStock);
+        try {
+            if (sh != null) {
+                sh.buyShares(shareAmount);
+            } else {
+                IStockHolding newStock = new StockHolding(tickerName, shareAmount);
+                newStock.updateShareValue();
+                newStock.updateValueOfHolding();
+                stocks.add(newStock);
+            }
+            notifyChanges();
+            return true;
+        }catch (WebsiteDataException wdEx){
+            return false;
         }
-        setChanged();
-        notifyObservers(this);
     }
 
 //    private String[][] stockListToArrayDel() {

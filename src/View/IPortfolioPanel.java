@@ -7,9 +7,9 @@ public interface IPortfolioPanel {
 
     AbstractButton getAddButton();
 
-    TextField getInputTickerName();
+    TextField getBuyTickerName();
 
-    TextField getInputShareAmount();
+    TextField getBuyShareAmount();
 
     AbstractButton getSellButton();
 
@@ -18,4 +18,5 @@ public interface IPortfolioPanel {
     TextField getSellTickerShareAmount();
 
     void popupErrorMessage(String s);
+
 }

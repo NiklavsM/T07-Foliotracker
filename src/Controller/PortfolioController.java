@@ -14,23 +14,22 @@ public class PortfolioController {
         System.out.println("TEST2.09");
         portfolioPanel = pp;
         this.portfolio = portfolio;
-        setUpAddButton();
-        setUpSellButton();
+        setupAddButton();
+        setupSellButton();
+        portfolio.notifyChanges();
     }
 
-    void setUpAddButton() {
+    void setupAddButton() {
         portfolioPanel.getAddButton().addActionListener(e -> {
             Double shareAmount = 0.0;
-            String tickerSymbol = portfolioPanel.getInputTickerName().getText();
+            String tickerSymbol = portfolioPanel.getBuyTickerName().getText();
             try {
-                shareAmount = Double.valueOf(portfolioPanel.getInputShareAmount().getText());
+                shareAmount = Double.valueOf(portfolioPanel.getBuyShareAmount().getText());
 //                Thread addShares = new Thread(new AddSharesThread(portfolio,portfolioPanel.getInputTickerName().getText(),shareAmount));
 //                addShares.start();
-                portfolio.buyStock(tickerSymbol, shareAmount);
-            }
-            catch (WebsiteDataException wdEx){
-                portfolioPanel.popupErrorMessage("Problems occurred when trying to access stock: " + tickerSymbol + ". Please check spelling and internet connection");
-                return;
+                if(!portfolio.buyStock(tickerSymbol, shareAmount)){
+                    portfolioPanel.popupErrorMessage("Problems occurred when trying to access stock: " + tickerSymbol + ". Please check spelling and internet connection");
+                }
             }
             catch (NumberFormatException nfEx){
                 portfolioPanel.popupErrorMessage("Buy amount has to be positive integer");
@@ -42,7 +41,7 @@ public class PortfolioController {
         });
     }
 
-    void setUpSellButton() {
+    void setupSellButton() {
         portfolioPanel.getSellButton().addActionListener(e -> {
             Double shareAmount = null;
             try {
@@ -60,4 +59,5 @@ public class PortfolioController {
             }
         });
     }
+
 }

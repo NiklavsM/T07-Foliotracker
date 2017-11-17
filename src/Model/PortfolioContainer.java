@@ -7,30 +7,55 @@ import java.util.Observable;
 
 
 public class PortfolioContainer extends Observable implements IPortfolioContainer {
-    List<Portfolio> portfolioList = new ArrayList<>();
+    private List<Portfolio> portfolioList = new ArrayList<>();
 
     public List<Portfolio> getPortfolioList() {
         return new ArrayList<>(portfolioList);
     }
 
     public void addToPortfolioList(String portfolio) {
-        Portfolio newPortfolio1 = new Portfolio(portfolio);
-        portfolioList.add(newPortfolio1);
+        Portfolio pf = getPortfolioBytName(portfolio);
         setChanged();
-        notifyObservers(newPortfolio1);
+        if (pf == null) {
+            Portfolio newPortfolio1 = new Portfolio(portfolio);
+            portfolioList.add(newPortfolio1);
+            notifyObservers(newPortfolio1);
+        }else{
+            notifyObservers(pf);
+        }
         System.out.println("Gets here");
     }
 
+    private Portfolio getPortfolioBytName(String name) {
+        for (Portfolio portfolio : portfolioList) {
+            if (portfolio.getName().equals(name)) {
+                return portfolio;
+            }
 
-    public String[][] getData() {
-
-        String[][] portfolioDataArray = new String[portfolioList.size()][4];
-        for (int i = 0; i < portfolioList.size(); i++) {
-           // portfolioDataArray[i][0] = portfolioList.get(i).ge
         }
-
         return null;
     }
 
+    public void deletePortfolio(String name) {
+        Portfolio portToDel = getPortfolioBytName(name);
+        if (portToDel != null) {
+            portfolioList.remove(portToDel);
+        }
+
+    }
+
+    public boolean containsPortfolio(String name) {
+        return getPortfolioBytName(name) != null;
+    }
+
+    public String[] getPortfolioNames(){
+        String[] portfolioNames = new String[portfolioList.size()];
+        int i = 0;
+        for(Portfolio portfolio : portfolioList){
+            portfolioNames[i]= portfolio.getName();
+            i++;
+        }
+        return  portfolioNames;
+    }
 
 }
