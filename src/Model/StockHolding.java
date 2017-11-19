@@ -41,14 +41,9 @@ public class StockHolding implements IStockHolding {
         return tickerSymbol;
     }
 
-    public void setTickerSymbol(String tickerSymbol) {
-        this.tickerSymbol = tickerSymbol;
-    }
-
     public Double getNumberOfShares() {
         return numberOfShares;
     }
-
 
     public Double getShareValue() {
         return shareValue;

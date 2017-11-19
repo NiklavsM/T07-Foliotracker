@@ -3,16 +3,15 @@ package View;
 import Controller.PortfolioController;
 import Model.IPortfolio;
 import Model.IPortfolioContainer;
+import Model.Portfolio;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class MainView implements Observer, IMainView {
 
@@ -24,29 +23,24 @@ public class MainView implements Observer, IMainView {
     private JMenuItem createNew;
     private JMenuItem openNew;
     private JMenuItem exitApp;
-    private JButton refreshPrice;
-    private JLabel currentPriceTest;
     private JButton closeButton;
     private JButton deleteButton;
-    private List<PortfolioController> portfolioControllers = new ArrayList<>();
-    private int tabIndex = 0;
+    private Map<String, PortfolioController> portfolioControllersMap = new HashMap<>();
+    private IPortfolioContainer portfolioContainer;
+    private List<String> closedTabs = new ArrayList<>();
 
-    public MainView() {
+    public MainView(IPortfolioContainer portfolioContainer) {
+        this.portfolioContainer = portfolioContainer;
         mainFrame = new JFrame();
         mainFrame.setTitle("FolioTracker");
 
         mainPanel = new JPanel(new CardLayout());
 
-        refreshPrice = new JButton("Refresh price");
-
         initializeMenuBar();
         setDeleteAndClose();
         tabs = new JTabbedPane();
 
-        currentPriceTest = new JLabel("No price");// just testing delete latter
-
         mainPanel.add(tabs);
-        mainPanel.add(refreshPrice);
         mainFrame.add(mainPanel);
         mainFrame.setBounds(500, 200, 825, 710);
         mainFrame.setVisible(true);
@@ -57,10 +51,15 @@ public class MainView implements Observer, IMainView {
         menuBar = new JMenuBar();
         menuBar.setName("menuBar");
         optionsMenu = new JMenu("Options");
+        optionsMenu.setMnemonic(KeyEvent.VK_M);
         menuBar.add(optionsMenu);
         createNew = new JMenuItem("Create New");
+        createNew.setMnemonic(KeyEvent.VK_N);
+        createNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         optionsMenu.add(createNew);
         openNew = new JMenuItem("Open");
+        openNew.setMnemonic(KeyEvent.VK_O);
+        openNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         optionsMenu.add(openNew);
         exitApp = new JMenuItem("Exit");
         exitApp.setMnemonic(KeyEvent.VK_X);
@@ -72,9 +71,17 @@ public class MainView implements Observer, IMainView {
         mainFrame.setJMenuBar(menuBar);
 
     }
-    private void setDeleteAndClose(){
+
+    public List<String> getClosedTabs() {
+        return closedTabs;
+    }
+
+    private void setDeleteAndClose() {
         closeButton = new JButton("Close");
         closeButton.setBounds(250, 580, 120, 20);
+        closeButton.addActionListener(e -> {
+            closeTab();
+        });
         closeButton.setVisible(false);
         deleteButton = new JButton("Delete");
         deleteButton.setBounds(400, 580, 120, 20);
@@ -82,10 +89,6 @@ public class MainView implements Observer, IMainView {
         mainFrame.add(deleteButton);
         mainFrame.add(closeButton);
     }
-//    public void addTab(String name) {
-//        PortfolioPanel newTab = new PortfolioPanel();
-//        tabs.addTab(name, newTab);
-//    }
 
     public JFrame getMainFrame() {
         return mainFrame;
@@ -104,11 +107,6 @@ public class MainView implements Observer, IMainView {
     }
 
 
-    public JMenu getOptionsMenu() {
-        return optionsMenu;
-    }
-
-
     public JMenuItem getCreateNew() {
         return createNew;
     }
@@ -118,19 +116,7 @@ public class MainView implements Observer, IMainView {
         return openNew;
     }
 
-
-    public JButton getRefreshPrice() {
-        return refreshPrice;
-    }
-
-    public void setRefreshPrice(JButton refreshPrice) {
-        this.refreshPrice = refreshPrice;
-    }
-
-    public JLabel getCurrentPriceTest() {
-        return currentPriceTest;
-    }
-    public String getPortfolioNamePopup(Object[] selectionValues){
+    public String getPortfolioNamePopup(Object[] selectionValues) {
         return (String) JOptionPane.showInputDialog(
                 mainFrame,
                 "Portfolio name:",
@@ -140,21 +126,66 @@ public class MainView implements Observer, IMainView {
                 selectionValues, null);
     }
 
-    public void popupErrorMessage(String errorText){
+    public void popupErrorMessage(String errorText) {
         JOptionPane.showMessageDialog(mainFrame, errorText);
+    }
+
+    private void enableActionButtons(boolean enable) {
+        closeButton.setVisible(enable);
+        deleteButton.setVisible(enable);
+    }
+
+    private void closeTab() {
+        closedTabs.add(tabs.getTitleAt(tabs.getSelectedIndex()));
+        tabs.remove(getTabs().getSelectedIndex());
+        if (tabs.getSelectedIndex() == -1) {
+            getCloseButton().setVisible(false);
+            getDeleteButton().setVisible(false);
+        }
+    }
+
+    private boolean tabIsOpened(String name) {
+        int tabCount = tabs.getTabCount();
+        for (int i = 0; i < tabCount; i++) {
+            if (tabs.getTitleAt(i).equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    private void addPortfolioTab() {
+        for (IPortfolio portfolio : portfolioContainer.getPortfolioList()) {
+            if (!tabIsOpened(portfolio.getName()) && !closedTabs.contains(portfolio.getName())) {
+                PortfolioPanel newTab = new PortfolioPanel(portfolio);
+                portfolio.addObserver(newTab);
+                PortfolioController portfolioController = new PortfolioController(newTab, portfolio);
+                portfolioControllersMap.put(portfolio.getName(), portfolioController);
+                tabs.addTab(portfolio.getName(), newTab);
+                tabs.setSelectedIndex(tabs.getTabCount() - 1);
+            }
+        }
+    }
+
+    private void removeDeadTabs() {
+        int tabCount = tabs.getTabCount();
+        for (int i = 0; i < tabCount; i++) {
+            if (!portfolioContainer.containsPortfolio(tabs.getTitleAt(i))) {
+                portfolioControllersMap.remove(tabs.getTitleAt(i));
+                tabs.remove(i);
+                tabCount = tabs.getTabCount();
+            }
+
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof IPortfolio) {
-            PortfolioPanel newTab = new PortfolioPanel();
-            tabs.addTab(((IPortfolio) arg).getName(), newTab);
-            tabs.setSelectedComponent(newTab);
-            closeButton.setVisible(true);
-            deleteButton.setVisible(true);
-            ((IPortfolio) arg).addObserver(newTab);
-            PortfolioController portfolioController = new PortfolioController(newTab, (IPortfolio) arg);
-            portfolioControllers.add(portfolioController);
+        if (portfolioContainer.getPortfolioList().size() > tabs.getTabCount()) {
+            addPortfolioTab();
         }
+
+        removeDeadTabs();
+        enableActionButtons(portfolioContainer.getPortfolioList().size() > 0);
+
     }
 }

@@ -15,22 +15,8 @@ public class Portfolio extends Observable implements IPortfolio {
     public Portfolio(String name) {
         this.name = name;
         Thread updater = new Thread(new PortfoloUpdaterThread(this));
-        updater.start();
+        //updater.start(); //uncommented for now, will use latter
     }
-
-//    public String[][] stockListToArray() {
-//        int portfolioSize = getStocks().size();
-//        String[][] portfolioDataArray = new String[portfolioSize][4];
-//        int i = 0;
-//        for (StockHolding sh : getStocks()) {
-//            portfolioDataArray[i][0] = sh.getTickerSymbol();
-//            portfolioDataArray[i][1] = sh.getNumberOfShares();
-//            portfolioDataArray[i][2] = sh.getShareValue();
-//            portfolioDataArray[i][3] = sh.getValueOfHolding();
-//            i++;
-//        }
-//        return portfolioDataArray;
-//    }
 
     public List<IStockHolding> getStocks() {
         return stocks;
@@ -48,19 +34,20 @@ public class Portfolio extends Observable implements IPortfolio {
         }
         return false;
     }
-    public void updateShareValues(){
 
-        for (IStockHolding sh : stocks) {
-            stockLock.lock();
-            try {
+    public void updateShareValues() {
+        stockLock.lock();
+        try {
+            for (IStockHolding sh : stocks) {
                 sh.updateShareValue();
-            }catch (Exception e){
-                e.printStackTrace();
-            }finally {
-                stockLock.unlock();
             }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            stockLock.unlock();
         }
+
+
         notifyChanges();
     }
 
@@ -76,7 +63,7 @@ public class Portfolio extends Observable implements IPortfolio {
 
     public void notifyChanges() {
         setChanged();
-        notifyObservers(this);
+        notifyObservers();
     }
 
     private IStockHolding getStockFromContainer(String tickerSymbol) {
@@ -112,18 +99,6 @@ public class Portfolio extends Observable implements IPortfolio {
         }
     }
 
-//    private String[][] stockListToArrayDel() {
-//        int stocksSize = stocks.size();
-//        String[][] sockArray = new String[stocks.size()][4];
-//        for (int i = 0; i < stocksSize; i++) {
-//            sockArray[i][0] = stocks.get(i).getTickerSymbol();
-//            sockArray[i][1] = stocks.get(i).getNumberOfShares();
-//            sockArray[i][2] = stocks.get(i).getShareValue();
-//            sockArray[i][3] = stocks.get(i).getValueOfHolding();
-//        }
-//
-//        return null;
-//    }
 
     public String getName() {
         return name;

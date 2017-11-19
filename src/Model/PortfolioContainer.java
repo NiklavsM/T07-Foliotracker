@@ -13,17 +13,15 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return new ArrayList<>(portfolioList);
     }
 
-    public void addToPortfolioList(String portfolio) {
+    public boolean addToPortfolioList(String portfolio) {
         Portfolio pf = getPortfolioBytName(portfolio);
-        setChanged();
         if (pf == null) {
             Portfolio newPortfolio1 = new Portfolio(portfolio);
             portfolioList.add(newPortfolio1);
-            notifyObservers(newPortfolio1);
-        }else{
-            notifyObservers(pf);
+            setChangedAndNotify();
+            return true;
         }
-        System.out.println("Gets here");
+        return false;
     }
 
     private Portfolio getPortfolioBytName(String name) {
@@ -36,26 +34,33 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return null;
     }
 
-    public void deletePortfolio(String name) {
+    private void setChangedAndNotify() {
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean deletePortfolio(String name) {
         Portfolio portToDel = getPortfolioBytName(name);
         if (portToDel != null) {
             portfolioList.remove(portToDel);
+            setChangedAndNotify();
+            return true;
         }
-
+        return false;
     }
 
     public boolean containsPortfolio(String name) {
         return getPortfolioBytName(name) != null;
     }
 
-    public String[] getPortfolioNames(){
+    public String[] getPortfolioNames() {
         String[] portfolioNames = new String[portfolioList.size()];
         int i = 0;
-        for(Portfolio portfolio : portfolioList){
-            portfolioNames[i]= portfolio.getName();
+        for (Portfolio portfolio : portfolioList) {
+            portfolioNames[i] = portfolio.getName();
             i++;
         }
-        return  portfolioNames;
+        return portfolioNames;
     }
 
 }

@@ -8,13 +8,10 @@ public class MainViewController {
     private IPortfolioContainer portfolioContainer;
 
     public MainViewController(IPortfolioContainer pc, IMainView mv) {
-        //    quoteServer = sqs;
         mainView = mv;
         portfolioContainer = pc;
-        //setValue();
         setupCreateNew();
         setupOpen();
-        setupCloseButton();
         setupRemoveButton();
     }
 
@@ -35,16 +32,9 @@ public class MainViewController {
                     return;
                 }
             }
-                portfolioContainer.addToPortfolioList(s);
+            mainView.getClosedTabs().remove(s);
+            mainView.update(null,null);
         });
-    }
-
-    private void setValue() {
-        try {
-            // mainView.getCurrentPriceTest().setText(quoteServer.getLastValue("MSFT"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void setupCreateNew() {
@@ -63,27 +53,10 @@ public class MainViewController {
         });
     }
 
-    private void setupCloseButton() {
-
-        mainView.getCloseButton().addActionListener(e -> {
-            closeTab();
-        });
-
-    }
-
     private void setupRemoveButton() {
         mainView.getDeleteButton().addActionListener(e -> {
             portfolioContainer.deletePortfolio(mainView.getTabs().getTitleAt(mainView.getTabs().getSelectedIndex()));
-            closeTab();
         });
-    }
-
-    private void closeTab() {
-        mainView.getTabs().remove(mainView.getTabs().getSelectedIndex());
-        if (mainView.getTabs().getSelectedIndex() == -1) {
-            mainView.getCloseButton().setVisible(false);
-            mainView.getDeleteButton().setVisible(false);
-        }
     }
 
 }

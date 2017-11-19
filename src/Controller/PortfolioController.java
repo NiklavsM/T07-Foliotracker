@@ -1,8 +1,6 @@
 package Controller;
 
 import Model.IPortfolio;
-import Model.NoSuchTickerException;
-import Model.WebsiteDataException;
 import View.IPortfolioPanel;
 
 public class PortfolioController {
@@ -19,7 +17,7 @@ public class PortfolioController {
         portfolio.notifyChanges();
     }
 
-    void setupAddButton() {
+    private void setupAddButton() {
         portfolioPanel.getAddButton().addActionListener(e -> {
             Double shareAmount = 0.0;
             String tickerSymbol = portfolioPanel.getBuyTickerName().getText().toLowerCase();
@@ -27,11 +25,10 @@ public class PortfolioController {
                 shareAmount = Double.valueOf(portfolioPanel.getBuyShareAmount().getText());
 //                Thread addShares = new Thread(new AddSharesThread(portfolio,portfolioPanel.getInputTickerName().getText(),shareAmount));
 //                addShares.start();
-                if(!portfolio.buyStock(tickerSymbol, shareAmount)){
+                if (!portfolio.buyStock(tickerSymbol, shareAmount)) {
                     portfolioPanel.popupErrorMessage("Problems occurred when trying to access stock: " + tickerSymbol + ". Please check spelling and internet connection");
                 }
-            }
-            catch (NumberFormatException nfEx){
+            } catch (NumberFormatException nfEx) {
                 portfolioPanel.popupErrorMessage("Buy amount has to be positive integer");
                 return;
             }
@@ -41,7 +38,7 @@ public class PortfolioController {
         });
     }
 
-    void setupSellButton() {
+   private void setupSellButton() {
         portfolioPanel.getSellButton().addActionListener(e -> {
             Double shareAmount = null;
             String tickerSymbol = portfolioPanel.getSellTickerName().getText().toLowerCase();
@@ -61,4 +58,7 @@ public class PortfolioController {
         });
     }
 
+    public IPortfolio getPortfolio() {
+        return portfolio;
+    }
 }

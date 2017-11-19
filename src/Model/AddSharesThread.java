@@ -2,9 +2,9 @@ package Model;
 
 public class AddSharesThread implements Runnable {
 
-    IPortfolio portfolio;
-    String tickerSymbol;
-    Double shareAmount;
+    private IPortfolio portfolio;
+    private String tickerSymbol;
+    private Double shareAmount;
 
     public AddSharesThread(IPortfolio portfolio, String tickerSymbol, Double shareAmount) {
         this.portfolio = portfolio;

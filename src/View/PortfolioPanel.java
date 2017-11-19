@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
+public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel {
 
     private JTable table;
     private DefaultTableModel model;
@@ -23,8 +23,10 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
     private TextField sellTickerShareAmount;
     private JLabel totalValueLabel;
     private Double totalValue = 0.0;
+    private IPortfolio portfolio;
 
-    public PortfolioPanel() {
+    public PortfolioPanel(IPortfolio portfolio) {
+        this.portfolio = portfolio;
         setLayout(null);
         setAddStock();
         setSellStock();
@@ -34,6 +36,7 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
 
 
     private void setAddStock() {
+
         JLabel buyTickerNameLabel = new JLabel("Ticker name");
         buyTickerNameLabel.setBounds(100, 20, 100, 20);
         buyTickerName = new TextField("MSFT", 20);
@@ -46,7 +49,6 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
 
         addButton.setBounds(530, 20, 100, 20);
 
-
         add(buyTickerNameLabel);
         add(buyShareAmountLabel);
         add(buyTickerName);
@@ -55,7 +57,7 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
 
     }
 
-    private void setSellStock(){
+    private void setSellStock() {
         JLabel sellTickerNameLabel = new JLabel("Ticker name");
         sellTickerNameLabel.setBounds(100, 50, 100, 20);
         sellTickerName = new TextField("MSFT", 20);
@@ -74,19 +76,12 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
         add(sellButton);
 
     }
-    private void setTotalValueLabel(){
+
+    private void setTotalValueLabel() {
         totalValueLabel = new JLabel(totalValue.toString());
         totalValueLabel.setBounds(300, 450, 300, 20);
         add(totalValueLabel);
     }
-//    private void setTotalValueLabel(){
-//        closeButton = new JButton("Close");
-//        closeButton.setBounds(250, 580, 120, 20);
-//        deleteButton = new JButton("Delete");
-//        deleteButton.setBounds(400, 580, 120, 20);
-//        //add(deleteButton);
-//        //add(closeButton);
-//    }
 
     private void initializeTable() {
         System.out.println("Initialize Table Was Called!");
@@ -95,12 +90,7 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
 
         String[] columnNames = {"Ticker Symbol", "Number Of Shares", "Price per Share", "Value of Holding"};
 
-        // StatsManager m = new StatsManager();
-        // StatsObject stats = m.getStatsObject();
-        // if (stats != null) {
         model = new DefaultTableModel(null, columnNames) {
-
-            //private static final long serialVersionUID = 1L;
 
             public Class<?> getColumnClass(int c) {
                 return getValueAt(0, c).getClass();
@@ -113,35 +103,13 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
         scrollPane.setBounds(20, 100, 750, 300);
         scrollPane.setViewportView(table);
         add(scrollPane);
-        //  }
+
     }
 
     public void addStock(IStockHolding sh) {
 
         model.addRow(new Object[]{sh.getTickerSymbol(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
     }
-
-//    public void setupCloseButton(JTabbedPane tp){
-//      //  int index = tabPane.indexOfTab(this);
-//        closeButton = new JButton("Close");
-//        closeButton.setBounds(250, 580, 120, 20);
-//       // tp.settab
-//        closeButton.addActionListener(e->{
-//            int i = tp.indexOfTabComponent(this);
-//            //parentTabPane.remove(0);
-//            System.out.println(this + "DOG2" + i);
-//            //if (i != -1) {
-//                System.out.println("DOG1");
-//                tp.remove(tp.getSelectedIndex());
-//            //}
-//        });
-//        add(closeButton);
-//    }
-
-
-//    public DefaultTableModel getModel() {
-//        return model;
-//    }
 
     public void setModel(DefaultTableModel model) {
         this.model = model;
@@ -159,12 +127,9 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
         return addButton;
     }
 
-
     public TextField getBuyTickerName() {
         return buyTickerName;
     }
-
-
 
     public TextField getBuyShareAmount() {
         return buyShareAmount;
@@ -174,27 +139,24 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
         return sellButton;
     }
 
-
-    void clearTable() {
+    private void clearTable() {
         int rowCount = model.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {
             model.removeRow(i);
         }
     }
 
-    public void popupErrorMessage(String errorText){
+    public void popupErrorMessage(String errorText) {
         JOptionPane.showMessageDialog(null, errorText);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof IPortfolio) {
-            clearTable();
-            List<IStockHolding> stockArray = ((IPortfolio) arg).getStocks();
-            for (IStockHolding sh : stockArray) {
-                addStock(sh);
-            }
-            totalValueLabel.setText("Total portfolio value is: " + String.format("%.2f",((IPortfolio) arg).getTotalValue()));
+        clearTable();
+        List<IStockHolding> stockArray = portfolio.getStocks();
+        for (IStockHolding sh : stockArray) {
+            addStock(sh);
         }
+        totalValueLabel.setText("Total portfolio value is: " + String.format("%.2f", portfolio.getTotalValue()));
     }
 }
