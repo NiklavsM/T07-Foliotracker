@@ -8,12 +8,14 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Portfolio extends Observable implements IPortfolio {
 
-    List<IStockHolding> stocks = new ArrayList<>();
-    String name;
-    Lock stockLock = new ReentrantLock();
+    private List<IStockHolding> stocks = new ArrayList<>();
+    private String name;
+    private Lock stockLock = new ReentrantLock();
 
     public Portfolio(String name) {
         this.name = name;
+        Thread updater = new Thread(new PortfoloUpdaterThread(this));
+        updater.start();
     }
 
 //    public String[][] stockListToArray() {
@@ -36,7 +38,7 @@ public class Portfolio extends Observable implements IPortfolio {
 
     public boolean sellStock(String tickerSymbol, Double amount) {
         IStockHolding stockHolding = getStockFromContainer(tickerSymbol);
-        if(stockHolding!=null) {
+        if (stockHolding != null) {
             stockHolding.sellShares(Double.valueOf(amount));
             if (stockHolding.getNumberOfShares() <= 0) {
                 removeStock(tickerSymbol);
@@ -46,8 +48,33 @@ public class Portfolio extends Observable implements IPortfolio {
         }
         return false;
     }
+    public void updateShareValues(){
 
-    public void notifyChanges(){
+        for (IStockHolding sh : stocks) {
+            stockLock.lock();
+            try {
+                sh.updateShareValue();
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                stockLock.unlock();
+            }
+
+        }
+        notifyChanges();
+    }
+
+
+    @Override
+    public Double getTotalValue() {
+        Double totalValue = 0.0;
+        for (IStockHolding sh : stocks) {
+            totalValue += sh.getValueOfHolding();
+        }
+        return totalValue.doubleValue();
+    }
+
+    public void notifyChanges() {
         setChanged();
         notifyObservers(this);
     }
@@ -60,6 +87,7 @@ public class Portfolio extends Observable implements IPortfolio {
         }
         return null;
     }
+
 
     private void removeStock(String tickerSymbol) {
         stocks.remove(getStockFromContainer(tickerSymbol));
@@ -79,7 +107,7 @@ public class Portfolio extends Observable implements IPortfolio {
             }
             notifyChanges();
             return true;
-        }catch (WebsiteDataException wdEx){
+        } catch (WebsiteDataException wdEx) {
             return false;
         }
     }

@@ -3,8 +3,6 @@ package Controller;
 import Model.IPortfolioContainer;
 import View.IMainView;
 
-import javax.swing.*;
-
 public class MainViewController {
     private IMainView mainView;
     private IPortfolioContainer portfolioContainer;

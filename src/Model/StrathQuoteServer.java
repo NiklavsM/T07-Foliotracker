@@ -43,7 +43,7 @@ public class StrathQuoteServer{
      *           The amount returned may contain commas, for example, "2,243.87"
      *           <br>
      */
-    public static String getLastValue(String tickerSymbol)
+    public static synchronized String getLastValue(String tickerSymbol)
             throws WebsiteDataException {
         _TOKEN1 = _TOKEN1a + tickerSymbol.toUpperCase() + _TOKEN1b;
         String strURLStart = _URL;

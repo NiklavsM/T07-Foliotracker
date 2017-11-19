@@ -21,12 +21,15 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
     private TextField buyShareAmount;
     private TextField sellTickerName;
     private TextField sellTickerShareAmount;
+    private JLabel totalValueLabel;
+    private Double totalValue = 0.0;
 
     public PortfolioPanel() {
         setLayout(null);
         setAddStock();
         setSellStock();
         initializeTable();
+        setTotalValueLabel();
     }
 
 
@@ -71,8 +74,12 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
         add(sellButton);
 
     }
-
-//    private void setDeleteAndClose(){
+    private void setTotalValueLabel(){
+        totalValueLabel = new JLabel(totalValue.toString());
+        totalValueLabel.setBounds(300, 450, 300, 20);
+        add(totalValueLabel);
+    }
+//    private void setTotalValueLabel(){
 //        closeButton = new JButton("Close");
 //        closeButton.setBounds(250, 580, 120, 20);
 //        deleteButton = new JButton("Delete");
@@ -112,7 +119,6 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
     public void addStock(IStockHolding sh) {
 
         model.addRow(new Object[]{sh.getTickerSymbol(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
-
     }
 
 //    public void setupCloseButton(JTabbedPane tp){
@@ -188,6 +194,7 @@ public class PortfolioPanel extends JPanel implements Observer,IPortfolioPanel {
             for (IStockHolding sh : stockArray) {
                 addStock(sh);
             }
+            totalValueLabel.setText("Total portfolio value is: " + String.format("%.2f",((IPortfolio) arg).getTotalValue()));
         }
     }
 }

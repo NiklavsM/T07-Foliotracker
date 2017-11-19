@@ -10,12 +10,6 @@ public class StockHolding implements IStockHolding {
     public StockHolding(String tickerSymbol, Double numberOfShares){
         try {
             System.out.println(Thread.currentThread().getId() + "  " + tickerSymbol);
-//            String shareValue = StrathQuoteServer.getLastValue(tickerSymbol);
-//            Double totalValueInteger = Double.valueOf(numberOfShares) * Double.valueOf(shareValue);
-//            System.out.println(Thread.currentThread().getId() + "  " + tickerSymbol);
-//            StrathQuoteServer sqs = new StrathQuoteServer();
-//            String shareValue = sqs.getLastValue(tickerSymbol);
-//            Double totalValueInteger = Double.valueOf(numberOfShares) * Double.valueOf(shareValue);
             this.tickerSymbol = tickerSymbol;
             this.numberOfShares = Double.valueOf(numberOfShares);
 //            updateShareValue();
@@ -55,25 +49,15 @@ public class StockHolding implements IStockHolding {
         return numberOfShares;
     }
 
-//    public void setNumberOfShares(String numberOfShares) {
-//        this.numberOfShares = numberOfShares;
-//    }
 
     public Double getShareValue() {
         return shareValue;
     }
 
-//    public void setShareValue(String shareValue) {
-//        this.shareValue = shareValue;
-//    }
 
     public Double getValueOfHolding() {
         return valueOfHolding;
     }
-
-//    public void setValueOfHolding(String valueOfHolding) {
-//        this.valueOfHolding = valueOfHolding;
-//    }
 
 
 }
