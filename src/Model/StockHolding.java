@@ -7,13 +7,14 @@ public class StockHolding implements IStockHolding {
     private Double shareValue;
     private Double valueOfHolding;
 
-    public StockHolding(String tickerSymbol, Double numberOfShares){
+    public StockHolding(String tickerSymbol, Double numberOfShares, Double shareValue){
         try {
             System.out.println(Thread.currentThread().getId() + "  " + tickerSymbol);
             this.tickerSymbol = tickerSymbol;
             this.numberOfShares = Double.valueOf(numberOfShares);
+            this.shareValue = shareValue;
 //            updateShareValue();
-//            updateValueOfHolding();
+            updateValueOfHolding();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -28,13 +29,17 @@ public class StockHolding implements IStockHolding {
         updateValueOfHolding();
     }
 
+    public void setShareValue(Double shareValue) {
+        this.shareValue = shareValue;
+        updateValueOfHolding();
+    }
     /**
      * @effects: updates share value. Throws WebsiteDataException if
      *           there are problems with the website.
      */
-    public void updateShareValue() throws WebsiteDataException {
-            shareValue = Double.valueOf(StrathQuoteServer.getLastValue(tickerSymbol));
-    }
+//    public void updateShareValue() throws WebsiteDataException {
+//            shareValue = Double.valueOf(StrathQuoteServer.getLastValue(tickerSymbol));
+//    }
 
     /**
      * @effects: calculates and updates value of holding.

@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -11,9 +12,11 @@ public class Portfolio extends Observable implements IPortfolio {
     private List<IStockHolding> stocks = new ArrayList<>();
     private String name;
     private Lock stockLock = new ReentrantLock();
+    private Map<String,Double> sharePrices;
 
-    public Portfolio(String name) {
+    public Portfolio(String name, Map<String,Double> sharePrices) {
         this.name = name;
+        this.sharePrices = sharePrices;
         //Thread updater = new Thread(new PortfolioUpdaterThread(this));
         //updater.start(); //uncommented for now, will use later
     }
@@ -49,7 +52,7 @@ public class Portfolio extends Observable implements IPortfolio {
         stockLock.lock();
         try {
             for (IStockHolding sh : stocks) {
-                sh.updateShareValue();
+                sh.setShareValue(sharePrices.get(sh.getTickerSymbol()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,14 +118,25 @@ public class Portfolio extends Observable implements IPortfolio {
      *
      */
     public boolean buyStock(String tickerName, Double shareAmount) {
+        System.out.println("shareTAble  " + sharePrices.size() + "Portfolio " + getName());
+        if(sharePrices.containsKey(tickerName)){
+           // sharePrices.get()
+            System.out.println(" Had already share  " + "Portfolio " + getName());
+        }else{
+            try {
+                sharePrices.put(tickerName,Double.valueOf(StrathQuoteServer.getLastValue(tickerName)));
+            } catch (WebsiteDataException e) {
+                e.printStackTrace();
+            }
+        }
         IStockHolding sh = getStockFromContainer(tickerName);
         try {
             if (sh != null) {
                 sh.buyShares(shareAmount);
             } else {
-                IStockHolding newStock = new StockHolding(tickerName, shareAmount);
-                newStock.updateShareValue();
-                newStock.updateValueOfHolding();
+                IStockHolding newStock = new StockHolding(tickerName, shareAmount,sharePrices.get(tickerName));
+                //newStock.updateShareValue();
+                //newStock.updateValueOfHolding();
                 stocks.add(newStock);
             }
             notifyChanges();

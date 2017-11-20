@@ -1,16 +1,37 @@
 package Model;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import Controller.PortfolioController;
+
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class PortfolioContainer extends Observable implements IPortfolioContainer {
     private List<Portfolio> portfolioList = new ArrayList<>();
+    private Map<String, Double> sharePrices;
+    private Lock sharePriceLock = new ReentrantLock();
+
+    public PortfolioContainer() {
+        sharePrices = new Hashtable<>();
+        Thread updater = new Thread(new SharePriceUpdaterThread(this, sharePrices));
+        updater.start();
+    }
 
     public List<Portfolio> getPortfolioList() {
         return new ArrayList<>(portfolioList);
+
+    }
+
+    public void setSharePrice(String tickerSymbol, Double value) {
+        sharePriceLock.lock();
+        try {
+            sharePrices.put(tickerSymbol,value);
+        } finally {
+            sharePriceLock.unlock();
+        }
+
     }
 
     /**
@@ -21,7 +42,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     public boolean addToPortfolioList(String portfolio) {
         Portfolio pf = getPortfolioBytName(portfolio);
         if (pf == null) {
-            Portfolio newPortfolio1 = new Portfolio(portfolio);
+            Portfolio newPortfolio1 = new Portfolio(portfolio, sharePrices);
             portfolioList.add(newPortfolio1);
             setChangedAndNotify();
             return true;
@@ -41,6 +62,12 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 
         }
         return null;
+    }
+
+    public void updateShareValues() {
+        for (Portfolio portfolio : portfolioList) {
+            portfolio.updateShareValues();
+        }
     }
 
     private void setChangedAndNotify() {
@@ -67,8 +94,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
      * @requires: name != null
      * @effects: returns true if the List contains this portfolio else return false.
      */
-    public boolean containsPortfolio(String name)
-    {
+    public boolean containsPortfolio(String name) {
         return getPortfolioBytName(name) != null;
     }
 

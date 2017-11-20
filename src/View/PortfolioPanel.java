@@ -33,6 +33,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
         setSellStock();
         initializeTable();
         setTotalValueLabel();
+        update(null,null);
     }
 
 
@@ -157,6 +158,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
     public void update(Observable o, Object arg) {
         clearTable();
         List<IStockHolding> stockArray = portfolio.getStocks();
+        System.out.println("portfolio " + portfolio.getName() + " stockArray  " + stockArray.size());
         for (IStockHolding sh : stockArray) {
             addStock(sh);
         }

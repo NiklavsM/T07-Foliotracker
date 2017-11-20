@@ -17,8 +17,9 @@ public interface IStockHolding {
 
     void buyShares(Double amount) throws WebsiteDataException;
 
-    void updateShareValue() throws WebsiteDataException;
+//    void updateShareValue() throws WebsiteDataException;
 
+    void setShareValue(Double shareValue); // maybe change? delete?
 
     void updateValueOfHolding();
 }
