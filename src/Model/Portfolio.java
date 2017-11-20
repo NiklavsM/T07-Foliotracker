@@ -94,7 +94,7 @@ public class Portfolio extends Observable implements IPortfolio {
 
     /**
      * @requires: tickerSymbol != null
-     * @effects: removes stock from the List by using the tickerSymbol, returns true if stock was remnoved returns false if
+     * @effects: removes stock from the List by using the tickerSymbol, returns true if stock was removed else returns false
      */
 
     private boolean removeStock(String tickerSymbol) {
@@ -111,7 +111,7 @@ public class Portfolio extends Observable implements IPortfolio {
      * @requires: tickerName != null && shareAmount > 0
      * @effects: returns true if the stock is bought using
      *           the shareAmount. Catches
-     *           WebsiteDataException if there are problems with the website hence couldnd buy shares and returns false.
+     *           WebsiteDataException if there are problems with the website hence could not buy shares and returns false.
      *
      */
     public boolean buyStock(String tickerName, Double shareAmount) {
