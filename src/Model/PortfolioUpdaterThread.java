@@ -2,21 +2,23 @@ package Model;
 
 import static java.lang.Thread.sleep;
 
-public class PortfoloUpdaterThread implements Runnable {
+public class PortfolioUpdaterThread implements Runnable {
 
 
     private Portfolio portfolio;
-    public PortfoloUpdaterThread(Portfolio portfolio) {
+
+    public PortfolioUpdaterThread(Portfolio portfolio) {
         this.portfolio = portfolio;
     }
+
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             portfolio.updateShareValues();
             System.out.println(Thread.currentThread().getId() + "   Updating values...");
             try {
                 sleep(10000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

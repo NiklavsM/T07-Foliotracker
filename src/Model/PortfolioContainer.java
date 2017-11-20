@@ -15,6 +15,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 
     /**
      * @requires: portfolio != null
+     * @modifies: this
      * @effects: returns true if portfolio is added else return false.
      */
     public boolean addToPortfolioList(String portfolio) {
@@ -49,6 +50,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 
     /**
      * @requires: name != null
+     * @modifies: this
      * @effects: returns true if the portfolio is removed from the List else return false.
      */
     public boolean deletePortfolio(String name) {
