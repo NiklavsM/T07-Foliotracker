@@ -3,6 +3,7 @@ package Controller;
 import Model.IPortfolioContainer;
 import View.IMainView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -49,7 +50,11 @@ public class MainViewController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(mainView.getDeleteButton())) {
-            portfolioContainer.deletePortfolio(mainView.getTabs().getTitleAt(mainView.getTabs().getSelectedIndex()));
+            //Delete confirmation
+            int deleteYES = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the current portfolio?","Delete Portfolio?",JOptionPane.YES_NO_OPTION);
+            if(deleteYES == JOptionPane.YES_OPTION) {
+                portfolioContainer.deletePortfolio(mainView.getTabs().getTitleAt(mainView.getTabs().getSelectedIndex()));
+            }
         } else if (e.getSource().equals(mainView.getCreateNew())) {
             tryToAddPortfolio();
         } else if (e.getSource().equals(mainView.getOpenNew())) {
