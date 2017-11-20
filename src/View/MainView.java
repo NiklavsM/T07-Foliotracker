@@ -120,11 +120,11 @@ public class MainView implements Observer, IMainView {
         return openNew;
     }
 
-    public String getPortfolioNamePopup(Object[] selectionValues) {
+    public String getPortfolioNamePopup(Object[] selectionValues,String title) {
         return (String) JOptionPane.showInputDialog(
                 mainFrame,
                 "Portfolio name:",
-                "New Portfolio",
+                title,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 selectionValues, null);

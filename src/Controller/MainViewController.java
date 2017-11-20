@@ -16,7 +16,7 @@ public class MainViewController implements ActionListener {
     }
 
     private void tryToAddPortfolio() {
-        String s = mainView.getPortfolioNamePopup(null);
+        String s = mainView.getPortfolioNamePopup(null, "New Portfolio");
         if ((s == null) || (s.length() <= 0)) {
             mainView.popupErrorMessage("Please enter portfolio's name");
             return;
@@ -30,7 +30,7 @@ public class MainViewController implements ActionListener {
 
     private void tryToOpenPortfolio() {
         int tabCount;
-        String s = mainView.getPortfolioNamePopup(portfolioContainer.getPortfolioNames());
+        String s = mainView.getPortfolioNamePopup(portfolioContainer.getPortfolioNames(), "Open Portfolio");
         if ((s == null) || (s.length() <= 0)) {
             return;
         }

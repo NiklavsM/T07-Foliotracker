@@ -21,7 +21,7 @@ public interface IMainView {
 
     void popupErrorMessage(String errorText);
 
-    String getPortfolioNamePopup(Object[] selectionValues);
+    String getPortfolioNamePopup(Object[] selectionValues,String title);
 
     List<String> getClosedTabs();
 
