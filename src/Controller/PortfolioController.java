@@ -14,7 +14,6 @@ public class PortfolioController implements ActionListener {
     public PortfolioController(IPortfolioPanel pp, IPortfolio portfolio) {
         portfolioPanel = pp;
         this.portfolio = portfolio;
-        //portfolio.notifyChanges();
     }
 
     private void tryToBuyStock(){

@@ -12,24 +12,18 @@ public class Portfolio extends Observable implements IPortfolio {
     private List<IStockHolding> stocks = new ArrayList<>();
     private String name;
     private Lock stockLock = new ReentrantLock();
-    private Map<String,Double> sharePrices;
+    private Map<String, Double> sharePrices;
 
-    public Portfolio(String name, Map<String,Double> sharePrices) {
+    public Portfolio(String name, Map<String, Double> sharePrices) {
         this.name = name;
         this.sharePrices = sharePrices;
-        //Thread updater = new Thread(new PortfolioUpdaterThread(this));
-        //updater.start(); //uncommented for now, will use later
-    }
-
-    public List<IStockHolding> getStocks() {
-        return stocks;
     }
 
     /**
      * @requires: tickerSymbol != null && amount > 0
      * @modifies: this
      * @effects: returns true if the stock is sold using
-     *           using the amount else if stock is not in portfolio returns false.
+     * using the amount else if stock is not in portfolio returns false.
      */
     public boolean sellStock(String tickerSymbol, Double amount) {
         IStockHolding stockHolding = getStockFromContainer(tickerSymbol);
@@ -46,7 +40,7 @@ public class Portfolio extends Observable implements IPortfolio {
 
     /**
      * @effects: updates the share values. Prints stack trace if it
-     *           catches Exception e.
+     * catches Exception e.
      */
     public void updateShareValues() {
         stockLock.lock();
@@ -59,7 +53,6 @@ public class Portfolio extends Observable implements IPortfolio {
         } finally {
             stockLock.unlock();
         }
-
 
         notifyChanges();
     }
@@ -102,42 +95,31 @@ public class Portfolio extends Observable implements IPortfolio {
 
     private boolean removeStock(String tickerSymbol) {
         IStockHolding sh = getStockFromContainer(tickerSymbol);
-        if(sh != null) {
+        if (sh != null) {
             stocks.remove(sh);
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     /**
-     * @requires: tickerName != null && shareAmount > 0
+     * @requires: tickerName != null && shareAmount != null && shareAmount > 0
      * @effects: returns true if the stock is bought using
-     *           the shareAmount. Catches
-     *           WebsiteDataException if there are problems with the website hence could not buy shares and returns false.
-     *
+     * the shareAmount. Catches
+     * WebsiteDataException if there are problems with the website hence could not buy shares and returns false.
      */
     public boolean buyStock(String tickerName, Double shareAmount) {
         System.out.println("shareTAble  " + sharePrices.size() + "Portfolio " + getName());
-        if(sharePrices.containsKey(tickerName)){
-           // sharePrices.get()
-            System.out.println(" Had already share  " + "Portfolio " + getName());
-        }else{
-            try {
-                sharePrices.put(tickerName,Double.valueOf(StrathQuoteServer.getLastValue(tickerName)));
-            } catch (WebsiteDataException e) {
-                e.printStackTrace();
-            }
-        }
         IStockHolding sh = getStockFromContainer(tickerName);
         try {
             if (sh != null) {
                 sh.buyShares(shareAmount);
             } else {
-                IStockHolding newStock = new StockHolding(tickerName, shareAmount,sharePrices.get(tickerName));
-                //newStock.updateShareValue();
-                //newStock.updateValueOfHolding();
-                stocks.add(newStock);
+                if (!sharePrices.containsKey(tickerName)) {
+                    sharePrices.put(tickerName, Double.valueOf(StrathQuoteServer.getLastValue(tickerName)));
+                }
+                stocks.add(new StockHolding(tickerName, shareAmount, sharePrices.get(tickerName)));
             }
             notifyChanges();
             return true;
@@ -146,6 +128,9 @@ public class Portfolio extends Observable implements IPortfolio {
         }
     }
 
+    public List<IStockHolding> getStocks() {
+        return stocks;
+    }
 
     public String getName() {
         return name;

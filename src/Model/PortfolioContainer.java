@@ -1,8 +1,5 @@
 package Model;
 
-
-import Controller.PortfolioController;
-
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -24,10 +21,15 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 
     }
 
+    /**
+     * @requires: tickerSymbol != null && value != null
+     * @modifies: this
+     * @effects: Sets the specified share price
+     */
     public void setSharePrice(String tickerSymbol, Double value) {
         sharePriceLock.lock();
         try {
-            sharePrices.put(tickerSymbol,value);
+            sharePrices.put(tickerSymbol, value);
         } finally {
             sharePriceLock.unlock();
         }
@@ -63,7 +65,10 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         }
         return null;
     }
-
+    /**
+     * @modifies: this
+     * @effects: Updates all the portfolio share prices
+     */
     public void updateShareValues() {
         for (Portfolio portfolio : portfolioList) {
             portfolio.updateShareValues();
