@@ -7,6 +7,5 @@ public class FolioTrackerApp {
         PortfolioContainer pc = new PortfolioContainer();
         MainView mainView = new MainView(pc);
         pc.addObserver(mainView);
-        MainViewController controller = new MainViewController(pc,mainView);
     }
 }

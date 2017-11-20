@@ -14,7 +14,7 @@ public class Portfolio extends Observable implements IPortfolio {
 
     public Portfolio(String name) {
         this.name = name;
-        Thread updater = new Thread(new PortfolioUpdaterThread(this));
+        //Thread updater = new Thread(new PortfolioUpdaterThread(this));
         //updater.start(); //uncommented for now, will use later
     }
 

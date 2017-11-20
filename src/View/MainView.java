@@ -1,5 +1,6 @@
 package View;
 
+import Controller.MainViewController;
 import Controller.PortfolioController;
 import Model.IPortfolio;
 import Model.IPortfolioContainer;
@@ -25,7 +26,7 @@ public class MainView implements Observer, IMainView {
     private JMenuItem exitApp;
     private JButton closeButton;
     private JButton deleteButton;
-    private Map<String, PortfolioController> portfolioControllersMap = new HashMap<>();
+   // private Map<String, PortfolioController> portfolioControllersMap = new HashMap<>();
     private IPortfolioContainer portfolioContainer;
     private List<String> closedTabs = new ArrayList<>();
 
@@ -54,11 +55,13 @@ public class MainView implements Observer, IMainView {
         optionsMenu.setMnemonic(KeyEvent.VK_M);
         menuBar.add(optionsMenu);
         createNew = new JMenuItem("Create New");
+        createNew.addActionListener(new MainViewController(this, portfolioContainer));
         createNew.setMnemonic(KeyEvent.VK_N);
         createNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         optionsMenu.add(createNew);
         openNew = new JMenuItem("Open");
         openNew.setMnemonic(KeyEvent.VK_O);
+        openNew.addActionListener(new MainViewController(this, portfolioContainer));
         openNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         optionsMenu.add(openNew);
         exitApp = new JMenuItem("Exit");
@@ -86,6 +89,7 @@ public class MainView implements Observer, IMainView {
         deleteButton = new JButton("Delete");
         deleteButton.setBounds(400, 580, 120, 20);
         deleteButton.setVisible(false);
+        deleteButton.addActionListener(new MainViewController(this, portfolioContainer));
         mainFrame.add(deleteButton);
         mainFrame.add(closeButton);
     }
@@ -158,8 +162,8 @@ public class MainView implements Observer, IMainView {
             if (!tabIsOpened(portfolio.getName()) && !closedTabs.contains(portfolio.getName())) {
                 PortfolioPanel newTab = new PortfolioPanel(portfolio);
                 portfolio.addObserver(newTab);
-                PortfolioController portfolioController = new PortfolioController(newTab, portfolio);
-                portfolioControllersMap.put(portfolio.getName(), portfolioController);
+                //PortfolioController portfolioController = new PortfolioController(newTab, portfolio);
+                //portfolioControllersMap.put(portfolio.getName(), portfolioController);
                 tabs.addTab(portfolio.getName(), newTab);
                 tabs.setSelectedIndex(tabs.getTabCount() - 1);
             }
@@ -170,7 +174,7 @@ public class MainView implements Observer, IMainView {
         int tabCount = tabs.getTabCount();
         for (int i = 0; i < tabCount; i++) {
             if (!portfolioContainer.containsPortfolio(tabs.getTitleAt(i))) {
-                portfolioControllersMap.remove(tabs.getTitleAt(i));
+                //portfolioControllersMap.remove(tabs.getTitleAt(i));
                 tabs.remove(i);
                 tabCount = tabs.getTabCount();
             }

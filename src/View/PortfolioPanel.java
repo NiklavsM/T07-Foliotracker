@@ -1,5 +1,6 @@
 package View;
 
+import Controller.PortfolioController;
 import Model.IPortfolio;
 import Model.IStockHolding;
 
@@ -46,6 +47,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
         buyShareAmount = new TextField("", 20);
         buyShareAmount.setBounds(420, 20, 100, 20);
         addButton = new JButton("Buy");
+        addButton.addActionListener(new PortfolioController(this,portfolio));
 
         addButton.setBounds(530, 20, 100, 20);
 
@@ -67,6 +69,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
         sellTickerShareAmount = new TextField("", 20);
         sellTickerShareAmount.setBounds(420, 50, 100, 20);
         sellButton = new JButton("Sell");
+        sellButton.addActionListener(new PortfolioController(this,portfolio));
         sellButton.setBounds(530, 50, 100, 20);
 
         add(sellTickerNameLabel);
@@ -78,8 +81,8 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
     }
 
     private void setTotalValueLabel() {
-        totalValueLabel = new JLabel(totalValue.toString());
-        totalValueLabel.setBounds(300, 450, 300, 20);
+        totalValueLabel = new JLabel("Total portfolio value is: " + totalValue.toString());
+        totalValueLabel.setBounds(550, 520, 300, 20);
         add(totalValueLabel);
     }
 
@@ -100,7 +103,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
         table.setEnabled(false);
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
         table.setRowSorter(sorter);
-        scrollPane.setBounds(20, 100, 750, 300);
+        scrollPane.setBounds(20, 100, 750, 400);
         scrollPane.setViewportView(table);
         add(scrollPane);
 
