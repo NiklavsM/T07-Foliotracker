@@ -15,13 +15,18 @@ public class Portfolio extends Observable implements IPortfolio {
     public Portfolio(String name) {
         this.name = name;
         Thread updater = new Thread(new PortfoloUpdaterThread(this));
-        //updater.start(); //uncommented for now, will use latter
+        //updater.start(); //uncommented for now, will use later
     }
 
     public List<IStockHolding> getStocks() {
         return stocks;
     }
 
+    /**
+     * @requires: tickerSymbol != null && amount > 0
+     * @effects: returns true if the stock is sold using
+     *           using the amount else return false.
+     */
     public boolean sellStock(String tickerSymbol, Double amount) {
         IStockHolding stockHolding = getStockFromContainer(tickerSymbol);
         if (stockHolding != null) {
@@ -35,6 +40,10 @@ public class Portfolio extends Observable implements IPortfolio {
         return false;
     }
 
+    /**
+     * @effects: updates the share value. Prints stack trace if it
+     *           catches Exception e.
+     */
     public void updateShareValues() {
         stockLock.lock();
         try {
@@ -52,6 +61,9 @@ public class Portfolio extends Observable implements IPortfolio {
     }
 
 
+    /**
+     * @effects: returns the total value of the stock.
+     */
     @Override
     public Double getTotalValue() {
         Double totalValue = 0.0;
@@ -66,6 +78,10 @@ public class Portfolio extends Observable implements IPortfolio {
         notifyObservers();
     }
 
+    /**
+     * @requires: tickerSymbol != null
+     * @effects: returns stock if stock's TickerSymbol==tickerSymbol else return null.
+     */
     private IStockHolding getStockFromContainer(String tickerSymbol) {
         for (IStockHolding sh : stocks) {
             if (sh.getTickerSymbol().equals(tickerSymbol)) {
@@ -75,11 +91,22 @@ public class Portfolio extends Observable implements IPortfolio {
         return null;
     }
 
+    /**
+     * @requires: tickerSymbol != null
+     * @effects: removes stock from the List by using the tickerSymbol.
+     */
 
     private void removeStock(String tickerSymbol) {
         stocks.remove(getStockFromContainer(tickerSymbol));
     }
 
+    /**
+     * @requires: tickerName != null && shareAmount > 0
+     * @effects: returns true if the stock is bought using
+     *           the shareAmount else return false. Catches
+     *           WebsiteDataException if there are problems with the website.
+     *
+     */
     public boolean buyStock(String tickerName, Double shareAmount) {
         System.out.println("TEST2.1");
         IStockHolding sh = getStockFromContainer(tickerName);

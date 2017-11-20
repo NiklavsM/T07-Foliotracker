@@ -19,19 +19,34 @@ public class StockHolding implements IStockHolding {
         }
     }
 
+    /**
+     * @requires:  amount > 0
+     * @effects: buy share using the amount and update the value.
+     */
     public void buyShares(Double amount){
         numberOfShares += amount;
         updateValueOfHolding();
     }
 
+    /**
+     * @effects: updates share value. Throws WebsiteDataException if
+     *           there are problems with the website.
+     */
     public void updateShareValue() throws WebsiteDataException {
             shareValue = Double.valueOf(StrathQuoteServer.getLastValue(tickerSymbol));
     }
 
+    /**
+     * @effects: calculates and updates value of holding.
+     */
     public void updateValueOfHolding() {
         valueOfHolding = shareValue * numberOfShares;
     }
 
+    /**
+     * @requires:  amount > 0
+     * @effects: sell share using the amount and update the value.
+     */
     public void sellShares(Double amount) {
         this.numberOfShares -= amount;
         updateValueOfHolding();
