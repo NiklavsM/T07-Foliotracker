@@ -22,7 +22,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     }
 
     /**
-     * @requires: tickerSymbol != null && value != null
+     * @requires: tickerSymbol != null 
      * @modifies: this
      * @effects: Sets the specified share price
      */
