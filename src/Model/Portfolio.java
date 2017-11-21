@@ -104,7 +104,7 @@ public class Portfolio extends Observable implements IPortfolio {
     }
 
     /**
-     * @requires: tickerName != null && shareAmount > 0
+     * @requires: tickerName != null && shareAmount != null && shareAmount > 0
      * @effects: returns true if the stock is bought using
      * the shareAmount. Catches
      * WebsiteDataException if there are problems with the website hence could not buy shares and returns false.
