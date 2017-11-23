@@ -21,10 +21,9 @@ public class StockHolding implements IStockHolding, Serializable {
         }
     }
 
-    /**
-     * @requires: amount > 0
-     * @effects: buy share using the amount and update the value.
-     */
+
+//      requires: amount > 0
+//      effects: buy share using the amount and update the value.
     public void buyShares(Double amount) {
         numberOfShares += amount;
         updateValueOfHolding();
@@ -35,17 +34,14 @@ public class StockHolding implements IStockHolding, Serializable {
         updateValueOfHolding();
     }
 
-    /**
-     * @effects: calculates and updates value of holding.
-     */
+//      effects: calculates and updates value of holding.
     public void updateValueOfHolding() {
         valueOfHolding = shareValue * numberOfShares;
     }
 
-    /**
-     * @requires: amount > 0
-     * @effects: sell share using the amount and update the value.
-     */
+
+//      requires: amount > 0
+//      effects: sell share using the amount and update the value.
     public void sellShares(Double amount) {
         this.numberOfShares -= amount;
         updateValueOfHolding();

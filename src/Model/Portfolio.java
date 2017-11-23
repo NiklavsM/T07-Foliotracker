@@ -20,12 +20,10 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
         this.sharePrices = sharePrices;
     }
 
-    /**
-     * @requires: tickerSymbol != null && amount > 0
-     * @modifies: this
-     * @effects: returns true if the stock is sold using
-     * using the amount else if stock is not in portfolio returns false.
-     */
+//    requires: tickerSymbol != null && amount > 0
+//    modifies: this
+//    effects: returns true if the stock is sold using
+//             the amount else if stock is not in portfolio returns false.
     public boolean sellStock(String tickerSymbol, Double amount) {
         IStockHolding stockHolding = getStockFromContainer(tickerSymbol);
         if (stockHolding != null) {
@@ -39,10 +37,9 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
         return false;
     }
 
-    /**
-     * @effects: updates the share values. Prints stack trace if it
-     * catches Exception e.
-     */
+
+//    effects: updates the share values. Prints stack trace if it
+//    catches Exception e.
     public void updateShareValues() {
         stockLock.lock();
         try {
@@ -59,9 +56,8 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
     }
 
 
-    /**
-     * @effects: returns the total value of the stock.
-     */
+
+//    effects: returns the total value of the stock.
     @Override
     public Double getTotalValue() {
         Double totalValue = 0.0;
@@ -76,10 +72,9 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
         notifyObservers();
     }
 
-    /**
-     * @requires: tickerSymbol != null
-     * @effects: returns stock if stock's TickerSymbol == tickerSymbol else returns null.
-     */
+
+//      requires: tickerSymbol != null
+//      effects: returns stock if stock's TickerSymbol == tickerSymbol else returns null.
     private IStockHolding getStockFromContainer(String tickerSymbol) {
         for (IStockHolding sh : stocks) {
             if (sh.getTickerSymbol().equals(tickerSymbol)) {
@@ -89,11 +84,10 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
         return null;
     }
 
-    /**
-     * @requires: tickerSymbol != null
-     * @effects: removes stock from the List by using the tickerSymbol, returns true if stock was removed else returns false
-     */
 
+//     requires: tickerSymbol != null
+//     effects: removes stock from the List by using the tickerSymbol,
+//              returns true if stock was removed else returns false.
     private boolean removeStock(String tickerSymbol) {
         IStockHolding sh = getStockFromContainer(tickerSymbol);
         if (sh != null) {
@@ -104,12 +98,11 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
         }
     }
 
-    /**
-     * @requires: tickerName != null && shareAmount != null && shareAmount > 0
-     * @effects: returns true if the stock is bought using
-     * the shareAmount. Catches
-     * WebsiteDataException if there are problems with the website hence could not buy shares and returns false.
-     */
+
+//      requires: tickerName != null && shareAmount != null && shareAmount > 0
+//      effects: returns true if the stock is bought using the shareAmount.
+//                Catches WebsiteDataException if there are problems with
+//                the website hence could not buy shares and returns false.
     public boolean buyStock(String tickerName, Double shareAmount) {
         System.out.println("shareTAble  " + sharePrices.size() + "Portfolio " + getName());
         IStockHolding sh = getStockFromContainer(tickerName);

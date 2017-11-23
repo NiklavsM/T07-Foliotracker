@@ -23,11 +23,10 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 
     }
 
-    /**
-     * @requires: tickerSymbol != null && value != null
-     * @modifies: this
-     * @effects: Sets the specified share price
-     */
+
+//      requires: tickerSymbol != null && value != null
+//      modifies: this
+//      effects: Sets the specified share price
     public void setSharePrice(String tickerSymbol, Double value) {
         //sharePriceLock.lock();
         //try {
@@ -38,11 +37,10 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 
     }
 
-    /**
-     * @requires: portfolio != null
-     * @modifies: this
-     * @effects: returns true if portfolio is added else return false.
-     */
+
+//      requires: portfolio != null
+//      modifies: this
+//      effects: returns true if portfolio is added else return false.
     public boolean addToPortfolioList(String portfolio) {
         Portfolio pf = getPortfolioBytName(portfolio);
         if (pf == null) {
@@ -54,10 +52,9 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return false;
     }
 
-    /**
-     * @requires: name != null
-     * @effects: returns portfolio if portfolio's Name == name else return null.
-     */
+
+//      requires: name != null
+//      effects: returns portfolio if portfolio's Name == name else return null.
     private Portfolio getPortfolioBytName(String name) {
         for (Portfolio portfolio : portfolioList) {
             if (portfolio.getName().equals(name)) {
@@ -68,10 +65,9 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return null;
     }
 
-    /**
-     * @modifies: this
-     * @effects: Updates all the portfolio share prices
-     */
+
+//      modifies: this
+//      effects: Updates all the portfolio share prices.
     public void updateShareValues() {
         for (Portfolio portfolio : portfolioList) {
             portfolio.updateShareValues();
@@ -142,11 +138,10 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         notifyObservers();
     }
 
-    /**
-     * @requires: name != null
-     * @modifies: this
-     * @effects: returns true if the portfolio is removed from the List else return false.
-     */
+
+//      requires: name != null
+//      modifies: this
+//      effects: returns true if the portfolio is removed from the List else return false.
     public boolean deletePortfolio(String name) {
         Portfolio portToDel = getPortfolioBytName(name);
         if (portToDel != null) {
@@ -157,17 +152,14 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return false;
     }
 
-    /**
-     * @requires: name != null
-     * @effects: returns true if the List contains this portfolio else return false.
-     */
+//      requires: name != null
+//      effects: returns true if the List contains this portfolio else return false.
     public boolean containsPortfolio(String name) {
         return getPortfolioBytName(name) != null;
     }
 
-    /**
-     * @effects: returns the name of each portfolio in the portfolioList.
-     */
+
+//      effects: returns the name of each portfolio in the portfolioList.
     public String[] getPortfolioNames() {
         String[] portfolioNames = new String[portfolioList.size()];
         int i = 0;
