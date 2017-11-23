@@ -1,12 +1,13 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import static java.lang.Thread.sleep;
 
-public class SharePriceUpdaterThread implements Runnable {
+public class SharePriceUpdaterThread implements Runnable, Serializable {
 
 
     private PortfolioContainer portfolioContainer;

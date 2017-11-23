@@ -1,6 +1,8 @@
 package Model;
 
-public class StockHolding implements IStockHolding {
+import java.io.Serializable;
+
+public class StockHolding implements IStockHolding, Serializable {
 
     private String tickerSymbol;
     private Double numberOfShares;

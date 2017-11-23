@@ -17,7 +17,7 @@ public class PortfolioController implements ActionListener {
     }
 
     private void tryToBuyStock(){
-        Double shareAmount = 0.0;
+        Double shareAmount;
         String tickerSymbol = portfolioPanel.getBuyTickerName().getText().toLowerCase();
         try {
             shareAmount = Double.valueOf(portfolioPanel.getBuyShareAmount().getText());
@@ -33,7 +33,7 @@ public class PortfolioController implements ActionListener {
         }
     }
     private void tryToSellStock(){
-        Double shareAmount = null;
+        Double shareAmount;
         String tickerSymbol = portfolioPanel.getSellTickerName().getText().toLowerCase();
         try {
             shareAmount = Double.valueOf(portfolioPanel.getSellTickerShareAmount().getText());

@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Observable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Portfolio extends Observable implements IPortfolio {
+public class Portfolio extends Observable implements IPortfolio,Serializable {
 
     private List<IStockHolding> stocks = new ArrayList<>();
     private String name;

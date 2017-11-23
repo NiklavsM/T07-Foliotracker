@@ -11,17 +11,19 @@ public interface IMainView {
 
     AbstractButton getOpenNew();
 
-    Component getMainFrame();
-
     AbstractButton getCloseButton();
 
     AbstractButton getDeleteButton();
+
+    AbstractButton getSaveNew();
+
+    AbstractButton getLoadFromFile();
 
     JTabbedPane getTabs();
 
     void popupErrorMessage(String errorText);
 
-    String getPortfolioNamePopup(Object[] selectionValues,String title);
+    String getPortfolioNamePopup(Object[] selectionValues, String title);
 
     List<String> getClosedTabs();
 

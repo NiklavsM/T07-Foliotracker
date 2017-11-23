@@ -6,6 +6,7 @@ import View.IMainView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class MainViewController implements ActionListener {
     private IMainView mainView;
@@ -31,6 +32,10 @@ public class MainViewController implements ActionListener {
 
     private void tryToOpenPortfolio() {
         int tabCount;
+        System.out.println("Success2"+ portfolioContainer.getPortfolioNames());
+        for(String s : portfolioContainer.getPortfolioNames()){
+            System.out.println("Name: "+ s);
+        }
         String s = mainView.getPortfolioNamePopup(portfolioContainer.getPortfolioNames(), "Open Portfolio");
         if ((s == null) || (s.length() <= 0)) {
             return;
@@ -47,6 +52,16 @@ public class MainViewController implements ActionListener {
         mainView.update(null, null);
     }
 
+    private void portfolioContainer(IPortfolioContainer portfolioContainer){
+        this.portfolioContainer = portfolioContainer;
+    }
+
+    public IPortfolioContainer getPortfolioContainer() {
+        return portfolioContainer;
+    }
+
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(mainView.getDeleteButton())) {
@@ -59,6 +74,11 @@ public class MainViewController implements ActionListener {
             tryToAddPortfolio();
         } else if (e.getSource().equals(mainView.getOpenNew())) {
             tryToOpenPortfolio();
+        }else if (e.getSource().equals(mainView.getSaveNew())) {
+            portfolioContainer.saveToFile();
+        } else if (e.getSource().equals(mainView.getLoadFromFile())) {
+            portfolioContainer.loadFromFile();
+            mainView.getTabs().removeAll();
         }
     }
 }

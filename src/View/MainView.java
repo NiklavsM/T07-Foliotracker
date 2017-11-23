@@ -9,6 +9,7 @@ import Model.Portfolio;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.util.*;
@@ -23,10 +24,13 @@ public class MainView implements Observer, IMainView {
     private JMenu optionsMenu;
     private JMenuItem createNew;
     private JMenuItem openNew;
+    private JMenuItem saveNew;
+    private JMenuItem loadFromFile;
+
     private JMenuItem exitApp;
     private JButton closeButton;
     private JButton deleteButton;
-   // private Map<String, PortfolioController> portfolioControllersMap = new HashMap<>();
+
     private IPortfolioContainer portfolioContainer;
     private List<String> closedTabs = new ArrayList<>();
 
@@ -38,7 +42,7 @@ public class MainView implements Observer, IMainView {
         mainPanel = new JPanel(new CardLayout());
 
         initializeMenuBar();
-        setDeleteAndClose();
+        setClose();
         tabs = new JTabbedPane();
 
         mainPanel.add(tabs);
@@ -49,21 +53,33 @@ public class MainView implements Observer, IMainView {
     }
 
     private void initializeMenuBar() {
+        ActionListener mainViewController = new MainViewController(this, portfolioContainer);
         menuBar = new JMenuBar();
         menuBar.setName("menuBar");
         optionsMenu = new JMenu("Options");
         optionsMenu.setMnemonic(KeyEvent.VK_M);
         menuBar.add(optionsMenu);
         createNew = new JMenuItem("Create New");
-        createNew.addActionListener(new MainViewController(this, portfolioContainer));
+        createNew.addActionListener(mainViewController);
         createNew.setMnemonic(KeyEvent.VK_N);
         createNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         optionsMenu.add(createNew);
         openNew = new JMenuItem("Open");
         openNew.setMnemonic(KeyEvent.VK_O);
-        openNew.addActionListener(new MainViewController(this, portfolioContainer));
+        openNew.addActionListener(mainViewController);
         openNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         optionsMenu.add(openNew);
+        optionsMenu.add(createNew);
+        saveNew = new JMenuItem("Save");
+        saveNew.setMnemonic(KeyEvent.VK_S);
+        saveNew.addActionListener(mainViewController);
+        saveNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
+        optionsMenu.add(saveNew);
+        loadFromFile = new JMenuItem("Load");
+        loadFromFile.setMnemonic(KeyEvent.VK_L);
+        loadFromFile.addActionListener(mainViewController);
+        loadFromFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.ALT_MASK));
+        optionsMenu.add(loadFromFile);
         exitApp = new JMenuItem("Exit");
         exitApp.setMnemonic(KeyEvent.VK_X);
         exitApp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
@@ -71,6 +87,11 @@ public class MainView implements Observer, IMainView {
             mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
         });
         optionsMenu.add(exitApp);
+        deleteButton = new JButton("Delete");
+        deleteButton.setBounds(400, 580, 120, 20);
+        deleteButton.setVisible(false);
+        deleteButton.addActionListener(mainViewController);
+        mainFrame.add(deleteButton);
         mainFrame.setJMenuBar(menuBar);
 
     }
@@ -79,23 +100,22 @@ public class MainView implements Observer, IMainView {
         return closedTabs;
     }
 
-    private void setDeleteAndClose() {
+    private void setClose() {
         closeButton = new JButton("Close");
         closeButton.setBounds(250, 580, 120, 20);
         closeButton.addActionListener(e -> {
             closeTab();
         });
         closeButton.setVisible(false);
-        deleteButton = new JButton("Delete");
-        deleteButton.setBounds(400, 580, 120, 20);
-        deleteButton.setVisible(false);
-        deleteButton.addActionListener(new MainViewController(this, portfolioContainer));
-        mainFrame.add(deleteButton);
         mainFrame.add(closeButton);
     }
 
-    public JFrame getMainFrame() {
-        return mainFrame;
+    public JMenuItem getSaveNew() {
+        return saveNew;
+    }
+
+    public JMenuItem getLoadFromFile() {
+        return loadFromFile;
     }
 
     public JTabbedPane getTabs() {
@@ -184,7 +204,10 @@ public class MainView implements Observer, IMainView {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("tabs.getTabCount() " + tabs.getTabCount());
+        System.out.println("portfolioContainer.getPortfolioList().size() " + portfolioContainer.getPortfolioList().size());
         if (portfolioContainer.getPortfolioList().size() > tabs.getTabCount()) {
+            System.out.println("Gets here11");
             addPortfolioTab();
         }
 
