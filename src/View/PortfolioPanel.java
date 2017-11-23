@@ -6,8 +6,10 @@ import Model.IStockHolding;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -109,6 +111,16 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
         add(scrollPane);
 
     }
+
+    //click row to edit values
+     public void tableMouseClicked(MouseEvent evt) {
+     if(evt.getClickCount() == 1) {
+         int index = table.getSelectedRow();
+        TableModel model = table.getModel();
+       String TickerSymbol = model.getValueAt(index, 0).toString();
+  }
+ }
+
 
     public void addStock(IStockHolding sh) {
 
