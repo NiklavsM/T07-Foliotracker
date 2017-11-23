@@ -13,12 +13,12 @@ import java.io.*;
  * that ticker symbols are not case sensitive. That is that "MSFT" and "msft"
  * are functionally equivalent.)
  * <p>
- * 
+ * <p>
  * A valid ticker symbol is one that is currently registered with either the New
  * York Stock Exchange (NYSE) or NASDAQ.
  */
 
-public class StrathQuoteServer{
+public class StrathQuoteServer {
 
     protected static final String _URL = "http://www.tickertech.com/cgi/?ticker=";
 
@@ -29,19 +29,18 @@ public class StrathQuoteServer{
     protected static String _TOKEN1 = new String();
 
     /**
-     * 
      * retrieve the latest market value of a stock
-     * 
+     *
      * @requires: tickerSymbol != null
      * @effects: returns a current value for tickerSymbol as a dollar amount,
-     *           with a period separating dollars and cents (eg, "120.50" for
-     *           one hundred and twenty dollars and fifty cents) <BR>
-     *           unless tickerSymbol is not a valid NYSE or NASDAQ symbol, when
-     *           throws Model.NoSuchTickerException <br>
-     *           or unless an error connecting to the website or some other
-     *           error occurs, when throws Model.WebsiteDataException <BR>
-     *           The amount returned may contain commas, for example, "2,243.87"
-     *           <br>
+     * with a period separating dollars and cents (eg, "120.50" for
+     * one hundred and twenty dollars and fifty cents) <BR>
+     * unless tickerSymbol is not a valid NYSE or NASDAQ symbol, when
+     * throws Model.NoSuchTickerException <br>
+     * or unless an error connecting to the website or some other
+     * error occurs, when throws Model.WebsiteDataException <BR>
+     * The amount returned may contain commas, for example, "2,243.87"
+     * <br>
      */
     public static synchronized String getLastValue(String tickerSymbol)
             throws WebsiteDataException {

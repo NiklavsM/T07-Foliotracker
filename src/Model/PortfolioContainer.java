@@ -29,12 +29,12 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
      * @effects: Sets the specified share price
      */
     public void setSharePrice(String tickerSymbol, Double value) {
-        sharePriceLock.lock();
-        try {
+        //sharePriceLock.lock();
+        //try {
             sharePrices.put(tickerSymbol, value);
-        } finally {
-            sharePriceLock.unlock();
-        }
+       // } finally {
+        //    sharePriceLock.unlock();
+       // }
 
     }
 
@@ -67,6 +67,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         }
         return null;
     }
+
     /**
      * @modifies: this
      * @effects: Updates all the portfolio share prices
@@ -77,7 +78,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         }
     }
 
-    public void loadFromFile(){
+    public void loadFromFile() {
         System.out.println("Here2");
 
         File saveFolder = new File("Saved Sessions");
@@ -92,15 +93,15 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
             try {
                 ObjectInputStream newStateO = new ObjectInputStream(new FileInputStream(saveFolder.getPath()));
                 portfolioList = ((PortfolioContainer) newStateO.readObject()).getPortfolioList();
-                //mainView.update(null, null);
                 newStateO.close();
-                System.out.println("Success"+getPortfolioNames());
-                for(String s : getPortfolioNames()){
-                    System.out.println("Name: "+ s);
+                System.out.println("Success" + getPortfolioNames());
+                for (String s : getPortfolioNames()) {
+                    System.out.println("Name: " + s);
                 }
-                for(String s : getPortfolioNames()){
-                    System.out.println("Name2: "+ s);
+                for (String s : getPortfolioNames()) {
+                    System.out.println("Name2: " + s);
                 }
+                setChangedAndNotify();
 
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "File not found", "File not found", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +114,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         }
     }
 
-    public void saveToFile(){
+    public void saveToFile() {
         File saveFolder = new File("Saved Sessions");
         if (!saveFolder.exists()) {
             saveFolder.mkdir();
@@ -129,7 +130,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
                         new FileOutputStream(fileChooser.getSelectedFile().getPath() + ".bin"));
                 stateObj.writeObject(this);
                 stateObj.close();
-                setChangedAndNotify();
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

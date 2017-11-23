@@ -41,7 +41,7 @@ public class MainView implements Observer, IMainView {
 
         mainPanel = new JPanel(new CardLayout());
 
-        initializeMenuBar();
+        setComponentsWithActionListener();
         setClose();
         tabs = new JTabbedPane();
 
@@ -52,34 +52,39 @@ public class MainView implements Observer, IMainView {
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    private void initializeMenuBar() {
+    private void setComponentsWithActionListener() {
         ActionListener mainViewController = new MainViewController(this, portfolioContainer);
+
         menuBar = new JMenuBar();
         menuBar.setName("menuBar");
         optionsMenu = new JMenu("Options");
         optionsMenu.setMnemonic(KeyEvent.VK_M);
         menuBar.add(optionsMenu);
+
         createNew = new JMenuItem("Create New");
         createNew.addActionListener(mainViewController);
         createNew.setMnemonic(KeyEvent.VK_N);
         createNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         optionsMenu.add(createNew);
+
         openNew = new JMenuItem("Open");
         openNew.setMnemonic(KeyEvent.VK_O);
         openNew.addActionListener(mainViewController);
         openNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         optionsMenu.add(openNew);
-        optionsMenu.add(createNew);
+
         saveNew = new JMenuItem("Save");
         saveNew.setMnemonic(KeyEvent.VK_S);
         saveNew.addActionListener(mainViewController);
         saveNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
         optionsMenu.add(saveNew);
+
         loadFromFile = new JMenuItem("Load");
         loadFromFile.setMnemonic(KeyEvent.VK_L);
         loadFromFile.addActionListener(mainViewController);
         loadFromFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.ALT_MASK));
         optionsMenu.add(loadFromFile);
+
         exitApp = new JMenuItem("Exit");
         exitApp.setMnemonic(KeyEvent.VK_X);
         exitApp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
@@ -87,11 +92,13 @@ public class MainView implements Observer, IMainView {
             mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
         });
         optionsMenu.add(exitApp);
+
         deleteButton = new JButton("Delete");
         deleteButton.setBounds(400, 580, 120, 20);
         deleteButton.setVisible(false);
         deleteButton.addActionListener(mainViewController);
         mainFrame.add(deleteButton);
+
         mainFrame.setJMenuBar(menuBar);
 
     }
@@ -110,14 +117,6 @@ public class MainView implements Observer, IMainView {
         mainFrame.add(closeButton);
     }
 
-    public JMenuItem getSaveNew() {
-        return saveNew;
-    }
-
-    public JMenuItem getLoadFromFile() {
-        return loadFromFile;
-    }
-
     public JTabbedPane getTabs() {
         return tabs;
     }
@@ -128,16 +127,6 @@ public class MainView implements Observer, IMainView {
 
     public JButton getDeleteButton() {
         return deleteButton;
-    }
-
-
-    public JMenuItem getCreateNew() {
-        return createNew;
-    }
-
-
-    public JMenuItem getOpenNew() {
-        return openNew;
     }
 
     public String getPortfolioNamePopup(Object[] selectionValues,String title) {
@@ -182,8 +171,6 @@ public class MainView implements Observer, IMainView {
             if (!tabIsOpened(portfolio.getName()) && !closedTabs.contains(portfolio.getName())) {
                 PortfolioPanel newTab = new PortfolioPanel(portfolio);
                 portfolio.addObserver(newTab);
-                //PortfolioController portfolioController = new PortfolioController(newTab, portfolio);
-                //portfolioControllersMap.put(portfolio.getName(), portfolioController);
                 tabs.addTab(portfolio.getName(), newTab);
                 tabs.setSelectedIndex(tabs.getTabCount() - 1);
             }
@@ -194,7 +181,6 @@ public class MainView implements Observer, IMainView {
         int tabCount = tabs.getTabCount();
         for (int i = 0; i < tabCount; i++) {
             if (!portfolioContainer.containsPortfolio(tabs.getTitleAt(i))) {
-                //portfolioControllersMap.remove(tabs.getTitleAt(i));
                 tabs.remove(i);
                 tabCount = tabs.getTabCount();
             }

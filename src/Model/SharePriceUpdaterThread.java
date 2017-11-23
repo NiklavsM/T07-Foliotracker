@@ -22,12 +22,12 @@ public class SharePriceUpdaterThread implements Runnable, Serializable {
     public void run() {
         while (true) {
             try {
-            Set<String> keySet = new HashSet<>(sharePrices.keySet());
-            for (String key : keySet) {
-                portfolioContainer.setSharePrice(key,Double.valueOf(StrathQuoteServer.getLastValue(key)));
-            }
+                Set<String> keySet = new HashSet<>(sharePrices.keySet());
+                for (String key : keySet) {
+                    portfolioContainer.setSharePrice(key, Double.valueOf(StrathQuoteServer.getLastValue(key)));
+                }
                 portfolioContainer.updateShareValues();
-            System.out.println(Thread.currentThread().getId() + "   Updating values...");
+                System.out.println(Thread.currentThread().getId() + "   Updating values...");
 
                 sleep(10000);
             } catch (Exception e) {

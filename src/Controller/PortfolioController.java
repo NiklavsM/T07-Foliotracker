@@ -52,9 +52,9 @@ public class PortfolioController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(portfolioPanel.getAddButton())) {
+        if (e.getActionCommand().equals("Buy")) {
             tryToBuyStock();
-        } else if (e.getSource().equals(portfolioPanel.getSellButton())) {
+        } else if (e.getActionCommand().equals("Sell")) {
             tryToSellStock();
         }
     }

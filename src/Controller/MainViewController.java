@@ -20,7 +20,7 @@ public class MainViewController implements ActionListener {
     private void tryToAddPortfolio() {
         String s = mainView.getPortfolioNamePopup(null, "New Portfolio");
         if ((s == null) || (s.length() <= 0)) {
-            mainView.popupErrorMessage("Please enter portfolio's name");
+            //mainView.popupErrorMessage("Please enter portfolio's name");
             return;
         }
         if (portfolioContainer.containsPortfolio(s)) {
@@ -32,9 +32,9 @@ public class MainViewController implements ActionListener {
 
     private void tryToOpenPortfolio() {
         int tabCount;
-        System.out.println("Success2"+ portfolioContainer.getPortfolioNames());
-        for(String s : portfolioContainer.getPortfolioNames()){
-            System.out.println("Name: "+ s);
+        System.out.println("Success2" + portfolioContainer.getPortfolioNames());
+        for (String s : portfolioContainer.getPortfolioNames()) {
+            System.out.println("Name: " + s);
         }
         String s = mainView.getPortfolioNamePopup(portfolioContainer.getPortfolioNames(), "Open Portfolio");
         if ((s == null) || (s.length() <= 0)) {
@@ -52,33 +52,27 @@ public class MainViewController implements ActionListener {
         mainView.update(null, null);
     }
 
-    private void portfolioContainer(IPortfolioContainer portfolioContainer){
-        this.portfolioContainer = portfolioContainer;
+    private void tryDeletePortfolio() {
+        //Delete confirmation
+        int deleteYES = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the current portfolio?", "Delete Portfolio?", JOptionPane.YES_NO_OPTION);
+        if (deleteYES == JOptionPane.YES_OPTION) {
+            portfolioContainer.deletePortfolio(mainView.getTabs().getTitleAt(mainView.getTabs().getSelectedIndex()));
+        }
     }
-
-    public IPortfolioContainer getPortfolioContainer() {
-        return portfolioContainer;
-    }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(mainView.getDeleteButton())) {
-            //Delete confirmation
-            int deleteYES = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the current portfolio?","Delete Portfolio?",JOptionPane.YES_NO_OPTION);
-            if(deleteYES == JOptionPane.YES_OPTION) {
-                portfolioContainer.deletePortfolio(mainView.getTabs().getTitleAt(mainView.getTabs().getSelectedIndex()));
-            }
-        } else if (e.getSource().equals(mainView.getCreateNew())) {
+        if (e.getActionCommand().equals("Delete")) {
+            tryDeletePortfolio();
+        } else if (e.getActionCommand().equals("Create New")) {
             tryToAddPortfolio();
-        } else if (e.getSource().equals(mainView.getOpenNew())) {
+        } else if (e.getActionCommand().equals("Open")) {
             tryToOpenPortfolio();
-        }else if (e.getSource().equals(mainView.getSaveNew())) {
+        } else if (e.getActionCommand().equals("Save")) {
             portfolioContainer.saveToFile();
-        } else if (e.getSource().equals(mainView.getLoadFromFile())) {
-            portfolioContainer.loadFromFile();
+        } else if (e.getActionCommand().equals("Load")) {
             mainView.getTabs().removeAll();
+            portfolioContainer.loadFromFile();
         }
     }
 }

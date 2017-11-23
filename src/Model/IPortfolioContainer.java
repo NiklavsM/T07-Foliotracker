@@ -8,7 +8,6 @@ public interface IPortfolioContainer {
 
     boolean addToPortfolioList(String portfolio);
 
-    //IPortfolio getPortfolioBytName(String name);
     boolean containsPortfolio(String name);
 
     String[] getPortfolioNames();

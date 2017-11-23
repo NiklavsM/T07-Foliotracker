@@ -7,18 +7,6 @@ import java.util.Observable;
 
 public interface IMainView {
 
-    AbstractButton getCreateNew();
-
-    AbstractButton getOpenNew();
-
-    AbstractButton getCloseButton();
-
-    AbstractButton getDeleteButton();
-
-    AbstractButton getSaveNew();
-
-    AbstractButton getLoadFromFile();
-
     JTabbedPane getTabs();
 
     void popupErrorMessage(String errorText);
