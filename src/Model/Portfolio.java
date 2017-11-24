@@ -105,8 +105,8 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
         }
     }
     //     requires: tickerSymbol != null && shareName != null
-//     effects: adds stock from the List by using the tickerName and the shareName
-    //          returns true if the stock was added else false
+    //     effects: adds stock from the List by using the tickerName and the shareName
+    //              returns true if the stock was added else false
 
     public boolean addStock(String tickerName, String shareName) {
         assert(tickerName == null): "The ticker name" + "" + tickerName + "" + "must not be null";
