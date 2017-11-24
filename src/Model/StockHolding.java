@@ -26,6 +26,7 @@ public class StockHolding implements IStockHolding, Serializable {
 //      requires: amount > 0
 //      effects: buy share using the amount and update the value.
     public void buyShares(Double amount) {
+        assert(amount > 0) : "The amount of" + "" + amount + "" + "must be a positive value";
         numberOfShares += amount;
         updateValueOfHolding();
     }
@@ -44,6 +45,7 @@ public class StockHolding implements IStockHolding, Serializable {
 //      requires: amount > 0
 //      effects: sell share using the amount and update the value.
     public void sellShares(Double amount) {
+        assert(amount > 0) : "The amount of" + "" + amount + "" + "must be a positive value";
         this.numberOfShares -= amount;
         updateValueOfHolding();
     }

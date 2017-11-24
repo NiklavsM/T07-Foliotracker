@@ -26,6 +26,8 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
 //             the amount else if stock is not in portfolio returns false.
     public boolean sellStock(String tickerSymbol, Double amount) {
         IStockHolding stockHolding = getStockFromContainer(tickerSymbol);
+        assert(amount > 0):"The amount of" + "" + amount + "" + " is negative, it must be a positive value";
+        assert(tickerSymbol == null): "The ticker symbol" + "" + tickerSymbol + "" + "is null, it must contain a value";
         if (stockHolding != null) {
             stockHolding.sellShares(Double.valueOf(amount));
             if (stockHolding.getNumberOfShares() <= 0) {
@@ -64,6 +66,7 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
         for (IStockHolding sh : stocks) {
             totalValue += sh.getValueOfHolding();
         }
+        assert(totalValue >= 0.0): "The value" + "" + totalValue + "" + "is negative, the total value of the stock must be 0 or greater";
         return totalValue.doubleValue();
     }
 
@@ -76,8 +79,11 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
 //      requires: tickerSymbol != null
 //      effects: returns stock if stock's TickerSymbol == tickerSymbol else returns null.
     private IStockHolding getStockFromContainer(String tickerSymbol) {
+        assert(tickerSymbol == null): "The ticker symbol" + "" + tickerSymbol + "" + "" + "must not contain a null value";
         for (IStockHolding sh : stocks) {
             if (sh.getTickerSymbol().equals(tickerSymbol)) {
+                assert(sh.getTickerSymbol().equals(tickerSymbol)): "The stocks's TickerSymbol is not equal to the tickerSymbol;";
+                assert(tickerSymbol.equals(sh.getTickerSymbol())): "The TickerSymbol is not equal to the stock's tickerSymbol;";
                 return sh;
             }
         }
@@ -90,6 +96,7 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
 //              returns true if stock was removed else returns false.
     private boolean removeStock(String tickerSymbol) {
         IStockHolding sh = getStockFromContainer(tickerSymbol);
+        assert(tickerSymbol == null): "The ticker symbol" + "" + tickerSymbol + "" + "" + "must not contain a null value";
         if (sh != null) {
             stocks.remove(sh);
             return true;
@@ -97,8 +104,13 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
             return false;
         }
     }
+    //     requires: tickerSymbol != null && shareName != null
+//     effects: adds stock from the List by using the tickerName and the shareName
+    //          returns true if the stock was added else false
 
     public boolean addStock(String tickerName, String shareName) {
+        assert(tickerName == null): "The ticker name" + "" + tickerName + "" + "must not be null";
+        assert(shareName == null) : "The share name" + "" + shareName + "" + "must not be null";
         IStockHolding sh = getStockFromContainer(tickerName);
         try {
             if (sh != null) {
@@ -123,7 +135,9 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
     public boolean buyStock(String tickerName, Double shareAmount) {
         System.out.println("shareTAble  " + sharePrices.size() + "Portfolio " + getName());
         IStockHolding sh = getStockFromContainer(tickerName);
-
+        assert(tickerName == null): "The ticker symbol" + "" + tickerName + "" + "" + "must not contain a null value";
+        assert(shareAmount == null): "The ticker symbol" + "" + shareAmount+ "" + "" + "must not contain a null value";
+        assert(shareAmount > 0): "The ticker symbol" + "" + shareAmount + "" + "" + "must be greater than 0";
         if (sh != null) {
             sh.buyShares(shareAmount);
         } else {

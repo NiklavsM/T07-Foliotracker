@@ -30,7 +30,10 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     public void setSharePrice(String tickerSymbol, Double value) {
         //sharePriceLock.lock();
         //try {
-            sharePrices.put(tickerSymbol, value);
+           assert(tickerSymbol == null): "The ticker symbol" + "" + tickerSymbol + "" + "" + "must not contain a null value";
+           assert(value == null):"The value of" + "" + value + "" + "" + "must not contain a null value";
+
+           sharePrices.put(tickerSymbol, value);
        // } finally {
         //    sharePriceLock.unlock();
        // }
@@ -43,9 +46,11 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 //      effects: returns true if portfolio is added else return false.
     public boolean addToPortfolioList(String portfolio) {
         Portfolio pf = getPortfolioBytName(portfolio);
+        assert(portfolio == null): "The ticker symbol" + "" + portfolio + "" + "" + "must not contain a null value";
         if (pf == null) {
             Portfolio newPortfolio1 = new Portfolio(portfolio, sharePrices);
             portfolioList.add(newPortfolio1);
+            assert(portfolioList.contains(newPortfolio1)): "The portfolio" + newPortfolio1 + "has not been added";
             setChangedAndNotify();
             return true;
         }
@@ -59,6 +64,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     private Portfolio getPortfolioBytName(String name) {
         for (Portfolio portfolio : portfolioList) {
             if (portfolio.getName().equals(name)) {
+                assert(portfolio.getName().equals(name)):"The names" + "" + portfolio.getName() + "and" + name + "" + "are not equal";
                 return portfolio;
             }
 
@@ -139,6 +145,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 //      effects: returns true if the portfolio is removed from the List else return false.
     public boolean deletePortfolio(String name) {
         Portfolio portToDel = getPortfolioBytName(name);
+        assert(name == null): "The name" + "" + name + "" + "must not be null";
         if (portToDel != null) {
             portfolioList.remove(portToDel);
             setChangedAndNotify();
@@ -150,13 +157,15 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
 //      requires: name != null
 //      effects: returns true if the List contains this portfolio else return false.
     public boolean containsPortfolio(String name) {
+        assert(name == null) : "The name" + ""  +  name + "" + "must not contain an null value";
         return getPortfolioBytName(name) != null;
     }
 
-
+       // requires: portfolioList is not empty
 //      effects: returns the name of each portfolio in the portfolioList.
     public String[] getPortfolioNames() {
         String[] portfolioNames = new String[portfolioList.size()];
+        assert(portfolioList.size() > 0): "The portfolio list is empty, it must contain at least one in order to return a portfolio";
         int i = 0;
         for (Portfolio portfolio : portfolioList) {
             portfolioNames[i] = portfolio.getName();
