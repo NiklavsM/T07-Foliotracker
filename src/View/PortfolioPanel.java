@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Observable;
@@ -18,12 +19,13 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
 
     private JTable table;
     private DefaultTableModel model;
+    private JButton buyButton;
     private JButton addButton;
     private JButton sellButton;
-    private TextField buyTickerName;
-    private TextField buyShareAmount;
-    private TextField sellTickerName;
-    private TextField sellTickerShareAmount;
+    private TextField addShareTickerSymbol;
+    private TextField addShareName;
+    private TextField buySellTickerSymbol;
+    private TextField buySellTickerShareAmount;
     private JLabel totalValueLabel;
     private Double totalValue = 0.0;
     private IPortfolio portfolio;
@@ -31,55 +33,56 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
     public PortfolioPanel(IPortfolio portfolio) {
         this.portfolio = portfolio;
         setLayout(null);
-        setAddStock();
-        setSellStock();
+        setButtons();
         initializeTable();
         setTotalValueLabel();
-        update(null,null);
+        update(null, null);
     }
 
 
-    private void setAddStock() {
+    private void setButtons() {
+        ActionListener portfolioController = new PortfolioController(this, portfolio);
 
         JLabel buyTickerNameLabel = new JLabel("Ticker name");
         buyTickerNameLabel.setBounds(100, 20, 100, 20);
-        buyTickerName = new TextField("MSFT", 20);
-        buyTickerName.setBounds(200, 20, 100, 20);
-        JLabel buyShareAmountLabel = new JLabel("Number of shares");
-        buyShareAmountLabel.setBounds(300, 20, 120, 20);
-        buyShareAmount = new TextField("", 20);
-        buyShareAmount.setBounds(420, 20, 100, 20);
-        addButton = new JButton("Buy");
-        addButton.addActionListener(new PortfolioController(this,portfolio));
-
-        addButton.setBounds(530, 20, 100, 20);
+        addShareTickerSymbol = new TextField("MSFT", 20);
+        addShareTickerSymbol.setBounds(200, 20, 100, 20);
+        JLabel addShareNameLabel = new JLabel("Share name");
+        addShareNameLabel.setBounds(300, 20, 120, 20);
+        addShareName = new TextField("", 20);
+        addShareName.setBounds(420, 20, 100, 20);
+        buyButton = new JButton("Buy");
+        buyButton.addActionListener(portfolioController);
+        buyButton.setBounds(530, 50, 60, 20);
 
         add(buyTickerNameLabel);
-        add(buyShareAmountLabel);
-        add(buyTickerName);
-        add(buyShareAmount);
-        add(addButton);
+        add(addShareNameLabel);
+        add(addShareTickerSymbol);
+        add(addShareName);
+        add(buyButton);
 
-    }
-
-    private void setSellStock() {
         JLabel sellTickerNameLabel = new JLabel("Ticker name");
         sellTickerNameLabel.setBounds(100, 50, 100, 20);
-        sellTickerName = new TextField("MSFT", 20);
-        sellTickerName.setBounds(200, 50, 100, 20);
+        buySellTickerSymbol = new TextField("MSFT", 20);
+        buySellTickerSymbol.setBounds(200, 50, 100, 20);
         JLabel sellAmountLabel = new JLabel("Number of shares");
         sellAmountLabel.setBounds(300, 50, 120, 20);
-        sellTickerShareAmount = new TextField("", 20);
-        sellTickerShareAmount.setBounds(420, 50, 100, 20);
+        buySellTickerShareAmount = new TextField("", 20);
+        buySellTickerShareAmount.setBounds(420, 50, 100, 20);
         sellButton = new JButton("Sell");
-        sellButton.addActionListener(new PortfolioController(this,portfolio));
-        sellButton.setBounds(530, 50, 100, 20);
+        sellButton.addActionListener(portfolioController);
+        sellButton.setBounds(590, 50, 60, 20);
 
         add(sellTickerNameLabel);
-        add(sellTickerName);
+        add(buySellTickerSymbol);
         add(sellAmountLabel);
-        add(sellTickerShareAmount);
+        add(buySellTickerShareAmount);
         add(sellButton);
+
+        addButton = new JButton("Add");
+        addButton.addActionListener(portfolioController);
+        addButton.setBounds(530, 20, 60, 20);
+        add(addButton);
 
     }
 
@@ -94,7 +97,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setFocusable(true);
 
-        String[] columnNames = {"Ticker Symbol", "Number Of Shares", "Price per Share", "Value of Holding"};
+        String[] columnNames = {"Ticker Symbol","Share name", "Number Of Shares", "Price per Share", "Value of Holding"};
 
         model = new DefaultTableModel(null, columnNames) {
 
@@ -112,47 +115,29 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
 
     }
 
-    //click row to edit values
-     public void tableMouseClicked(MouseEvent evt) {
-     if(evt.getClickCount() == 1) {
-         int index = table.getSelectedRow();
-        TableModel model = table.getModel();
-       String TickerSymbol = model.getValueAt(index, 0).toString();
-  }
- }
-
-
     public void addStock(IStockHolding sh) {
 
-        model.addRow(new Object[]{sh.getTickerSymbol(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
+        model.addRow(new Object[]{sh.getTickerSymbol(),sh.getShareName(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
     }
 
     public void setModel(DefaultTableModel model) {
         this.model = model;
     }
 
-    public TextField getSellTickerName() {
-        return sellTickerName;
+    public TextField getBuySellTickerSymbol() {
+        return buySellTickerSymbol;
     }
 
-    public TextField getSellTickerShareAmount() {
-        return sellTickerShareAmount;
+    public TextField getBuySellShareAmount() {
+        return buySellTickerShareAmount;
     }
 
-    public JButton getAddButton() {
-        return addButton;
+    public TextField getAddShareTickerSymbol() {
+        return addShareTickerSymbol;
     }
 
-    public TextField getBuyTickerName() {
-        return buyTickerName;
-    }
-
-    public TextField getBuyShareAmount() {
-        return buyShareAmount;
-    }
-
-    public AbstractButton getSellButton() {
-        return sellButton;
+    public TextField getAddShareName() {
+        return addShareName;
     }
 
     private void clearTable() {
@@ -165,6 +150,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
     public void popupErrorMessage(String errorText) {
         JOptionPane.showMessageDialog(null, errorText);
     }
+
 
     @Override
     public void update(Observable o, Object arg) {

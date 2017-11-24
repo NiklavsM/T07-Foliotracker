@@ -5,13 +5,13 @@ import java.awt.*;
 
 public interface IPortfolioPanel {
 
-    TextField getBuyTickerName();
+    TextField getAddShareTickerSymbol();
 
-    TextField getBuyShareAmount();
+    TextField getAddShareName();
 
-    TextField getSellTickerName();
+    TextField getBuySellTickerSymbol();
 
-    TextField getSellTickerShareAmount();
+    TextField getBuySellShareAmount();
 
     void popupErrorMessage(String s);
 

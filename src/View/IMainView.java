@@ -16,4 +16,8 @@ public interface IMainView {
     List<String> getClosedTabs();
 
     void update(Observable o, Object arg);
+
+    void emptyTabs();
+
+    int conformationPopup(String message, String title);
 }

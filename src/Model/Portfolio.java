@@ -8,7 +8,7 @@ import java.util.Observable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Portfolio extends Observable implements IPortfolio,Serializable {
+public class Portfolio extends Observable implements IPortfolio, Serializable {
 
     private List<IStockHolding> stocks = new ArrayList<>();
     private String name;
@@ -104,6 +104,24 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
         }
     }
 
+    public boolean addStock(String tickerName, String shareName) {
+        IStockHolding sh = getStockFromContainer(tickerName);
+        try {
+            if (sh != null) {
+                return false;
+            } else {
+                if (!sharePrices.containsKey(tickerName)) {
+                    sharePrices.put(tickerName, Double.valueOf(StrathQuoteServer.getLastValue(tickerName)));
+                }
+                stocks.add(new StockHolding(tickerName, shareName, 0.0, sharePrices.get(tickerName)));
+            }
+            notifyChanges();
+            return true;
+        } catch (WebsiteDataException wdEx) {
+            return false;
+        }
+    }
+
     /**
      * @requires: tickerName != null && shareAmount != null && shareAmount > 0
      * @effects: returns true if the stock is bought using
@@ -113,20 +131,15 @@ public class Portfolio extends Observable implements IPortfolio,Serializable {
     public boolean buyStock(String tickerName, Double shareAmount) {
         System.out.println("shareTAble  " + sharePrices.size() + "Portfolio " + getName());
         IStockHolding sh = getStockFromContainer(tickerName);
-        try {
-            if (sh != null) {
-                sh.buyShares(shareAmount);
-            } else {
-                if (!sharePrices.containsKey(tickerName)) {
-                    sharePrices.put(tickerName, Double.valueOf(StrathQuoteServer.getLastValue(tickerName)));
-                }
-                stocks.add(new StockHolding(tickerName, shareAmount, sharePrices.get(tickerName)));
-            }
-            notifyChanges();
-            return true;
-        } catch (WebsiteDataException wdEx) {
+
+        if (sh != null) {
+            sh.buyShares(shareAmount);
+        } else {
             return false;
         }
+        notifyChanges();
+        return true;
+
     }
 
     public List<IStockHolding> getStocks() {

@@ -3,6 +3,8 @@ package Model;
 public interface IStockHolding {
     String getTickerSymbol();
 
+    String getShareName();
+
     Double getNumberOfShares();
 
     Double getShareValue();
@@ -11,7 +13,7 @@ public interface IStockHolding {
 
     void sellShares(Double amount);
 
-    void buyShares(Double amount) throws WebsiteDataException;
+    void buyShares(Double amount);
 
     void setShareValue(Double shareValue);
 }

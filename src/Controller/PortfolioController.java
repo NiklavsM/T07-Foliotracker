@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.IPortfolio;
+import Model.WebsiteDataException;
 import View.IPortfolioPanel;
 
 import java.awt.event.ActionEvent;
@@ -16,13 +17,13 @@ public class PortfolioController implements ActionListener {
         this.portfolio = portfolio;
     }
 
-    private void tryToBuyStock(){
+    private void tryToBuyStock() {
         Double shareAmount;
-        String tickerSymbol = portfolioPanel.getBuyTickerName().getText().toLowerCase();
+        String tickerSymbol = portfolioPanel.getBuySellTickerSymbol().getText().toLowerCase();
         try {
-            shareAmount = Double.valueOf(portfolioPanel.getBuyShareAmount().getText());
+            shareAmount = Double.valueOf(portfolioPanel.getBuySellShareAmount().getText());
             if (!portfolio.buyStock(tickerSymbol, shareAmount)) {
-                portfolioPanel.popupErrorMessage("Problems occurred when trying to access stock: " + tickerSymbol + ". Please check spelling and internet connection");
+                portfolioPanel.popupErrorMessage("You dont own this stock");
             }
         } catch (NumberFormatException nfEx) {
             portfolioPanel.popupErrorMessage("Buy amount has to be positive integer");
@@ -32,11 +33,25 @@ public class PortfolioController implements ActionListener {
             portfolioPanel.popupErrorMessage("Buy amount has to be positive integer");
         }
     }
-    private void tryToSellStock(){
-        Double shareAmount;
-        String tickerSymbol = portfolioPanel.getSellTickerName().getText().toLowerCase();
+
+    private void tryToAddStock() {
+        String tickerSymbol = portfolioPanel.getAddShareTickerSymbol().getText().toLowerCase();
+        String shareName = portfolioPanel.getAddShareName().getText();
         try {
-            shareAmount = Double.valueOf(portfolioPanel.getSellTickerShareAmount().getText());
+            if (!portfolio.addStock(tickerSymbol, shareName)) {
+                portfolioPanel.popupErrorMessage("You already own this stock");
+            }
+        } catch (WebsiteDataException webEx) {
+            portfolioPanel.popupErrorMessage("Problems occurred when trying to access stock: " + tickerSymbol + ". Please check spelling and internet connection");
+            return;
+        }
+    }
+
+    private void tryToSellStock() {
+        Double shareAmount;
+        String tickerSymbol = portfolioPanel.getBuySellTickerSymbol().getText().toLowerCase();
+        try {
+            shareAmount = Double.valueOf(portfolioPanel.getBuySellShareAmount().getText());
         } catch (NumberFormatException ex) {
             portfolioPanel.popupErrorMessage("Sell amount has to be positive integer");
             return;
@@ -52,7 +67,9 @@ public class PortfolioController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Buy")) {
+        if (e.getActionCommand().equals("Add")) {
+            tryToAddStock();
+        } else if (e.getActionCommand().equals("Buy")) {
             tryToBuyStock();
         } else if (e.getActionCommand().equals("Sell")) {
             tryToSellStock();

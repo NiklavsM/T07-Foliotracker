@@ -14,7 +14,7 @@ public interface IPortfolioContainer {
 
     boolean deletePortfolio(String portfolioName);
 
-    void loadFromFile();
+    boolean loadFromFile();
 
     void saveToFile();
 }

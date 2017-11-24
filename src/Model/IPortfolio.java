@@ -17,4 +17,6 @@ public interface IPortfolio {
     boolean sellStock(String tickerSymbol, Double amount);
 
     Double getTotalValue();
+
+    boolean addStock(String tickerSymbol, String shareName) throws WebsiteDataException;
 }

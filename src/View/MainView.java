@@ -103,6 +103,13 @@ public class MainView implements Observer, IMainView {
 
     }
 
+    public void emptyTabs(){
+        tabs.removeAll();
+        closedTabs.clear();
+        enableActionButtons(false);
+
+    }
+
     public List<String> getClosedTabs() {
         return closedTabs;
     }
@@ -138,7 +145,10 @@ public class MainView implements Observer, IMainView {
                 null,
                 selectionValues, null);
     }
-
+    public int conformationPopup(String message, String title) {
+        //Delete confirmation
+        return JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION);
+    }
     public void popupErrorMessage(String errorText) {
         JOptionPane.showMessageDialog(mainFrame, errorText);
     }

@@ -5,13 +5,14 @@ import java.io.Serializable;
 public class StockHolding implements IStockHolding, Serializable {
 
     private String tickerSymbol;
+    private String shareName;
     private Double numberOfShares;
     private Double shareValue;
     private Double valueOfHolding;
 
-    public StockHolding(String tickerSymbol, Double numberOfShares, Double shareValue) {
+    public StockHolding(String tickerSymbol, String shareName, Double numberOfShares, Double shareValue) {
         try {
-            System.out.println(Thread.currentThread().getId() + "  " + tickerSymbol);
+            this.shareName = shareName;
             this.tickerSymbol = tickerSymbol;
             this.numberOfShares = Double.valueOf(numberOfShares);
             this.shareValue = shareValue;
@@ -53,6 +54,10 @@ public class StockHolding implements IStockHolding, Serializable {
 
     public String getTickerSymbol() {
         return tickerSymbol;
+    }
+
+    public String getShareName() {
+        return shareName;
     }
 
     public Double getNumberOfShares() {

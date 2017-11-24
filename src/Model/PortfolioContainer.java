@@ -55,7 +55,6 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     }
 
     /**
-     * @requires: name != null
      * @effects: returns portfolio if portfolio's Name == name else return null.
      */
     private Portfolio getPortfolioBytName(String name) {
@@ -78,8 +77,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         }
     }
 
-    public void loadFromFile() {
-        System.out.println("Here2");
+    public boolean loadFromFile() {
 
         File saveFolder = new File("Saved Sessions");
         if (!saveFolder.exists()) {
@@ -94,14 +92,8 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
                 ObjectInputStream newStateO = new ObjectInputStream(new FileInputStream(saveFolder.getPath()));
                 portfolioList = ((PortfolioContainer) newStateO.readObject()).getPortfolioList();
                 newStateO.close();
-                System.out.println("Success" + getPortfolioNames());
-                for (String s : getPortfolioNames()) {
-                    System.out.println("Name: " + s);
-                }
-                for (String s : getPortfolioNames()) {
-                    System.out.println("Name2: " + s);
-                }
                 setChangedAndNotify();
+                return true;
 
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "File not found", "File not found", JOptionPane.ERROR_MESSAGE);
@@ -112,6 +104,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
                 JOptionPane.showMessageDialog(null, "Class not right", "Class not right", JOptionPane.ERROR_MESSAGE);
             }
         }
+        return false;
     }
 
     public void saveToFile() {
