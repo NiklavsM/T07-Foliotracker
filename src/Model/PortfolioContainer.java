@@ -2,82 +2,61 @@ package Model;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Map;
+import java.util.Observable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class PortfolioContainer extends Observable implements IPortfolioContainer, Serializable {
-    private List<Portfolio> portfolioList = new ArrayList<>();
-    private Map<String, Double> sharePrices;
-    private Lock sharePriceLock = new ReentrantLock();
+    private Map<String, Portfolio> portfolioList = new ConcurrentHashMap<>();
+    private Map<String, Double> sharePrices = new ConcurrentHashMap<>();
 
     public PortfolioContainer() {
-        sharePrices = new Hashtable<>();
         Thread updater = new Thread(new SharePriceUpdaterThread(this, sharePrices));
         updater.start();
     }
 
-    public List<Portfolio> getPortfolioList() {
-        return new ArrayList<>(portfolioList);
+    public Map<String, IPortfolio> getPortfolios() {
+        return new ConcurrentHashMap<>(portfolioList);
+    }
 
+    private Map<String, Portfolio> getPortfolioMap() {
+        return new ConcurrentHashMap<>(portfolioList);
     }
 
 
-//      requires: tickerSymbol != null && value != null
+    //      requires: tickerSymbol != null && value != null
 //      modifies: this
 //      effects: Sets the specified share price
     public void setSharePrice(String tickerSymbol, Double value) {
-        //sharePriceLock.lock();
-        //try {
-           assert(tickerSymbol == null): "The ticker symbol" + "" + tickerSymbol + "" + "" + "must not contain a null value";
-           assert(value == null):"The value of" + "" + value + "" + "" + "must not contain a null value";
+        assert (tickerSymbol != null) : "The ticker symbol must not be null";
+        assert (value != null) : "The value must not be null";
 
-           sharePrices.put(tickerSymbol, value);
-       // } finally {
-        //    sharePriceLock.unlock();
-       // }
+        sharePrices.put(tickerSymbol, value);
 
     }
 
 
-//      requires: portfolio != null
+    //      requires: portfolio != null
 //      modifies: this
-//      effects: returns true if portfolio is added else return false.
-    public boolean addToPortfolioList(String portfolio) {
-        Portfolio pf = getPortfolioBytName(portfolio);
-        assert(portfolio == null): "The ticker symbol" + "" + portfolio + "" + "" + "must not contain a null value";
-        if (pf == null) {
+//      effects: returns true if portfolio is added else returns false if portfolio with this name already exists
+    public boolean addPortfolio(String portfolio) {
+
+        assert (portfolio != null) : "Portfolio must not be null";
+        if (portfolioList.get(portfolio) == null) {
             Portfolio newPortfolio1 = new Portfolio(portfolio, sharePrices);
-            portfolioList.add(newPortfolio1);
-            assert(portfolioList.contains(newPortfolio1)): "The portfolio" + newPortfolio1 + "has not been added";
+            portfolioList.put(portfolio, newPortfolio1);
             setChangedAndNotify();
             return true;
         }
         return false;
     }
 
-
-
-//      effects: returns portfolio if portfolio's Name == name else return null.
-
-    private Portfolio getPortfolioBytName(String name) {
-        for (Portfolio portfolio : portfolioList) {
-            if (portfolio.getName().equals(name)) {
-                assert(portfolio.getName().equals(name)):"The names" + "" + portfolio.getName() + "and" + name + "" + "are not equal";
-                return portfolio;
-            }
-
-        }
-        return null;
-    }
-
-
-//      modifies: this
-//      effects: Updates all the portfolio share prices.
+    //      modifies: this
+//      effects: Updates all portfolios share prices.
     public void updateShareValues() {
-        for (Portfolio portfolio : portfolioList) {
-            portfolio.updateShareValues();
+        for (String key : portfolioList.keySet()) {
+            portfolioList.get(key).updateShareValues();
         }
     }
 
@@ -94,7 +73,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
             saveFolder = fileChooser.getSelectedFile();
             try {
                 ObjectInputStream newStateO = new ObjectInputStream(new FileInputStream(saveFolder.getPath()));
-                portfolioList = ((PortfolioContainer) newStateO.readObject()).getPortfolioList();
+                portfolioList = ((PortfolioContainer) newStateO.readObject()).getPortfolioMap();
                 newStateO.close();
                 setChangedAndNotify();
                 return true;
@@ -140,38 +119,26 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     }
 
 
-//      requires: name != null
+    //      requires: name != null
 //      modifies: this
 //      effects: returns true if the portfolio is removed from the List else return false.
     public boolean deletePortfolio(String name) {
-        Portfolio portToDel = getPortfolioBytName(name);
-        assert(name == null): "The name" + "" + name + "" + "must not be null";
-        if (portToDel != null) {
-            portfolioList.remove(portToDel);
+
+        assert (name != null) : "The name must not be null";
+        if (!portfolioList.containsKey(name)) {
+            portfolioList.remove(name);
             setChangedAndNotify();
             return true;
         }
         return false;
     }
 
-//      requires: name != null
+    //      requires: name != null
 //      effects: returns true if the List contains this portfolio else return false.
     public boolean containsPortfolio(String name) {
-        assert(name == null) : "The name" + ""  +  name + "" + "must not contain an null value";
-        return getPortfolioBytName(name) != null;
+        assert (name != null) : "The name must not contain an null value";
+        return portfolioList.containsKey(name);
     }
 
-       // requires: portfolioList is not empty
-//      effects: returns the name of each portfolio in the portfolioList.
-    public String[] getPortfolioNames() {
-        String[] portfolioNames = new String[portfolioList.size()];
-        assert(portfolioList.size() > 0): "The portfolio list is empty, it must contain at least one in order to return a portfolio";
-        int i = 0;
-        for (Portfolio portfolio : portfolioList) {
-            portfolioNames[i] = portfolio.getName();
-            i++;
-        }
-        return portfolioNames;
-    }
 
 }

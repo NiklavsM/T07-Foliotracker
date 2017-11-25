@@ -1,11 +1,10 @@
 package View;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 import java.util.Observable;
 
-public interface IMainView {
+public interface IPortfolioContainerView {
 
     JTabbedPane getTabs();
 

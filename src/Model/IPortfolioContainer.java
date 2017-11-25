@@ -1,16 +1,14 @@
 package Model;
 
 
-import java.util.List;
+import java.util.Map;
 
 public interface IPortfolioContainer {
-    List<Portfolio> getPortfolioList();
+    Map<String, IPortfolio> getPortfolios();
 
-    boolean addToPortfolioList(String portfolio);
+    boolean addPortfolio(String portfolio);
 
     boolean containsPortfolio(String name);
-
-    String[] getPortfolioNames();
 
     boolean deletePortfolio(String portfolioName);
 

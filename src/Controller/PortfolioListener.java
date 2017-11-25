@@ -7,12 +7,12 @@ import View.IPortfolioPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PortfolioController implements ActionListener {
+public class PortfolioListener implements ActionListener {
 
     private IPortfolioPanel portfolioPanel;
     private IPortfolio portfolio;
 
-    public PortfolioController(IPortfolioPanel pp, IPortfolio portfolio) {
+    public PortfolioListener(IPortfolioPanel pp, IPortfolio portfolio) {
         portfolioPanel = pp;
         this.portfolio = portfolio;
     }
@@ -43,7 +43,6 @@ public class PortfolioController implements ActionListener {
             }
         } catch (WebsiteDataException webEx) {
             portfolioPanel.popupErrorMessage("Problems occurred when trying to access stock: " + tickerSymbol + ". Please check spelling and internet connection");
-            return;
         }
     }
 

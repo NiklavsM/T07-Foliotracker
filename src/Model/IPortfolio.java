@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Observer;
 
 public interface IPortfolio {
@@ -10,7 +10,7 @@ public interface IPortfolio {
 
     boolean buyStock(String tickerSymbol, Double numberOfShares);
 
-    List<IStockHolding> getStocks();
+    Map<String,IStockHolding> getStocks();
 
     void notifyChanges();
 

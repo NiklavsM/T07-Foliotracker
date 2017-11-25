@@ -11,15 +11,11 @@ public class StockHolding implements IStockHolding, Serializable {
     private Double valueOfHolding;
 
     public StockHolding(String tickerSymbol, String shareName, Double numberOfShares, Double shareValue) {
-        try {
             this.shareName = shareName;
             this.tickerSymbol = tickerSymbol;
-            this.numberOfShares = Double.valueOf(numberOfShares);
+            this.numberOfShares = numberOfShares;
             this.shareValue = shareValue;
             updateValueOfHolding();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -37,7 +33,7 @@ public class StockHolding implements IStockHolding, Serializable {
     }
 
 //      effects: calculates and updates value of holding.
-    public void updateValueOfHolding() {
+    private void updateValueOfHolding() {
         valueOfHolding = shareValue * numberOfShares;
     }
 

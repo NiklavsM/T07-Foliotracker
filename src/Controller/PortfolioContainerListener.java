@@ -1,16 +1,16 @@
 package Controller;
 
 import Model.IPortfolioContainer;
-import View.IMainView;
+import View.IPortfolioContainerView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainViewController implements ActionListener {
-    private IMainView mainView;
+public class PortfolioContainerListener implements ActionListener {
+    private IPortfolioContainerView mainView;
     private IPortfolioContainer portfolioContainer;
 
-    public MainViewController(IMainView mv, IPortfolioContainer pc) {
+    public PortfolioContainerListener(IPortfolioContainerView mv, IPortfolioContainer pc) {
         mainView = mv;
         portfolioContainer = pc;
     }
@@ -20,17 +20,26 @@ public class MainViewController implements ActionListener {
         if ((s == null) || (s.length() <= 0)) {
             return;
         }
-        if (portfolioContainer.containsPortfolio(s)) {
+        if (!portfolioContainer.addPortfolio(s)) {
             mainView.popupErrorMessage("Portfolio already exists");
-            return;
         }
-        portfolioContainer.addToPortfolioList(s);
+
+    }
+
+    private String[] getPortfolioNames() {
+        String[] portfolioNames = new String[portfolioContainer.getPortfolios().size()];
+        int i = 0;
+        for (String name : portfolioContainer.getPortfolios().keySet()) {
+            portfolioNames[i] = name;
+            i++;
+        }
+        return portfolioNames;
     }
 
     private void tryToOpenPortfolio() {
         int tabCount;
 
-        String s = mainView.getPortfolioNamePopup(portfolioContainer.getPortfolioNames(), "Open Portfolio");
+        String s = mainView.getPortfolioNamePopup(getPortfolioNames(), "Open Portfolio");
         if ((s == null) || (s.length() <= 0)) {
             return;
         }
