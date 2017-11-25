@@ -125,7 +125,7 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     public boolean deletePortfolio(String name) {
 
         assert (name != null) : "The name must not be null";
-        if (!portfolioList.containsKey(name)) {
+        if (portfolioList.containsKey(name)) {
             portfolioList.remove(name);
             setChangedAndNotify();
             return true;

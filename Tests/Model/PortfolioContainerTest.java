@@ -34,35 +34,32 @@ public class PortfolioContainerTest {
 
     @Test
     public void addToPortfolioList() {
-        assertNotNull(portfolio);
-        assertTrue(portContainer.addToPortfolioList(portfolio));
+        assertTrue(portContainer.addPortfolio(portfolio));
     }
 
     @Test
     public void updateShareValues() {
     }
 
-    @Test
-    public void loadFromFile() {
-        assertTrue(portContainer.loadFromFile());
-    }
+//    @Test
+//    public void loadFromFile() {
+//        assertTrue(portContainer.loadFromFile());
+//    }
+
+//    @Test
+//    public void saveToFile() {
+//        portContainer.saveToFile();
+//    }
 
     @Test
-    public void saveToFile() {
-        portContainer.saveToFile();
-    }
-
-    @Test
-    public void deletePortfolio() {
-        assertNotNull(portfolio);
-        assertTrue(portContainer.deletePortfolio(portfolio));
+    public void deletePortfolioNonExisting() {
+        assertFalse(portContainer.deletePortfolio(portfolio));
 
     }
 
     @Test
     public void containsPortfolio() {
-        assertNotNull(portfolio);
-        assertTrue(portContainer.containsPortfolio(portfolio));
+        assertFalse(portContainer.containsPortfolio(portfolio));
     }
 
 //    @Test

@@ -28,9 +28,7 @@ public class PortfolioTest {
 
     @Test
     public void sellStock() {
-        assertNotNull(tickerSymbol);
-        assertTrue(amount > 0);
-        assertTrue(portFolio.sellStock(tickerSymbol,amount));
+        assertFalse(portFolio.sellStock(tickerSymbol,amount));
     }
 
 //    @Test
@@ -48,16 +46,22 @@ public class PortfolioTest {
 
     @Test
     public void addStock() throws WebsiteDataException{
-        assertTrue(tickerSymbol != null);
-        assertTrue(sharename != null);
         assertTrue(portFolio.addStock(tickerSymbol,sharename));
     }
 
+    @Test(expected = WebsiteDataException.class)
+    public void addStockNonExistingStock() throws WebsiteDataException{
+        portFolio.addStock("fakestockabc",sharename);
+    }
+
     @Test
-    public void buyStock() {
-        assertTrue(tickerSymbol != null);
-        assertNotNull(shareamount);
-        assertTrue(shareamount > 0);
+    public void buyStockNotOwned() {
+        assertFalse(portFolio.buyStock(tickerSymbol, shareamount));
+    }
+
+    @Test
+    public void buyStock() throws WebsiteDataException {
+        portFolio.addStock(tickerSymbol,sharename);
         assertTrue(portFolio.buyStock(tickerSymbol, shareamount));
     }
 
