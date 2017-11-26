@@ -1,6 +1,7 @@
 package Model;
 
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface IPortfolioContainer {
@@ -12,7 +13,10 @@ public interface IPortfolioContainer {
 
     boolean deletePortfolio(String portfolioName);
 
-    boolean loadFromFile();
+    boolean loadFromFile(String filePath) throws IOException, ClassNotFoundException;
 
-    void saveToFile();
+    void saveToFile(String filePath) throws IOException;
+
+ //   void setChangedAndNotify();
+
 }

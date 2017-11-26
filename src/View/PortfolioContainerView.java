@@ -5,9 +5,14 @@ import Model.IPortfolioContainer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class PortfolioContainerView implements Observer, IPortfolioContainerView {
 
@@ -120,13 +125,23 @@ public class PortfolioContainerView implements Observer, IPortfolioContainerView
                 selectionValues, null);
     }
 
-    public int conformationPopup(String message, String title) {
+    public boolean conformationPopup(String message, String title) {
         //Delete confirmation
-        return JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION);
+        return (JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION)==0);
     }
 
     public void popupErrorMessage(String errorText) {
         JOptionPane.showMessageDialog(mainFrame, errorText);
+    }
+
+    public String getFilePath() {
+
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile().getPath();
+        }
+        return null;
     }
 
     private void enableActionButtons(boolean enable) {

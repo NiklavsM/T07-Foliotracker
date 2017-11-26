@@ -5,6 +5,7 @@ import View.IPortfolioContainerView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class PortfolioContainerListener implements ActionListener {
     private IPortfolioContainerView mainView;
@@ -13,6 +14,31 @@ public class PortfolioContainerListener implements ActionListener {
     public PortfolioContainerListener(IPortfolioContainerView mv, IPortfolioContainer pc) {
         mainView = mv;
         portfolioContainer = pc;
+    }
+
+    private boolean loadFromFile() {
+        String path;
+        try {
+            path = mainView.getFilePath();
+            if (path != null) {
+                portfolioContainer.loadFromFile(path);
+                return true;
+            }
+            return false;
+        } catch (IOException e) {
+            mainView.popupErrorMessage("Failed to load the file");
+        } catch (ClassNotFoundException e) {
+            mainView.popupErrorMessage("Failed to load the file");
+        }
+        return true;
+    }
+
+    private void saveToFile() {
+        try {
+            portfolioContainer.saveToFile(mainView.getFilePath());
+        } catch (IOException e) {
+            mainView.popupErrorMessage("Failed to save the file");
+        }
     }
 
     private void tryToAddPortfolio() {
@@ -56,9 +82,7 @@ public class PortfolioContainerListener implements ActionListener {
     }
 
     private void tryDeletePortfolio() {
-        //Delete confirmation
-        int deleteYES = mainView.conformationPopup("Are you sure you want to delete the current portfolio?", "Delete Portfolio?");
-        if (deleteYES == 0) {
+        if (mainView.conformationPopup("Are you sure you want to delete the current portfolio?", "Delete Portfolio?")) {
             portfolioContainer.deletePortfolio(mainView.getTabs().getTitleAt(mainView.getTabs().getSelectedIndex()));
         }
     }
@@ -72,10 +96,10 @@ public class PortfolioContainerListener implements ActionListener {
         } else if (e.getActionCommand().equals("Open")) {
             tryToOpenPortfolio();
         } else if (e.getActionCommand().equals("Save")) {
-            portfolioContainer.saveToFile();
+            saveToFile();
         } else if (e.getActionCommand().equals("Load")) {
             mainView.emptyTabs();
-            if (!portfolioContainer.loadFromFile()) {
+            if (!loadFromFile()) {
                 mainView.update(null, null);
             }
 

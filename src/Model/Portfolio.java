@@ -18,18 +18,19 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
 
     //    requires: tickerSymbol != null && amount > 0
 //    modifies: this
-//    effects: returns true if the stock is sold using
-//             the amount else if stock is not in portfolio returns false.
+//    effects: If subtracting amount will result in balance <0 delete stock else sells the specified amount in both cases returns true,
+//             if stock is not in portfolio returns false.
     public boolean sellStock(String tickerSymbol, Double amount) {
 
-        assert (amount > 0) : "The amount of" + "" + amount + "" + " is negative, it must be a positive value";
+        assert (amount > 0) : "The amount of " + amount + " is negative, it must be a positive value";
         assert (tickerSymbol != null) : "The ticker symbol is null, it must contain a value";
 
         StockHolding stockHolding = stocks.get(tickerSymbol);
         if (stockHolding != null) {
-            stockHolding.sellShares(amount);
-            if (stockHolding.getNumberOfShares() <= 0) {
+            if (Double.compare(stockHolding.getNumberOfShares()-amount,0.0)<0) {
                 removeStock(tickerSymbol);
+            }else{
+                stockHolding.sellShares(amount);
             }
             notifyChanges();
             return true;
@@ -55,7 +56,7 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
         for (String tickerSymbol : stocks.keySet()) {
             totalValue += stocks.get(tickerSymbol).getValueOfHolding();
         }
-        assert (totalValue >= 0.0) : "The value" + "" + totalValue + "" + "is negative, the total value of the stock must be 0 or greater";
+        assert (totalValue >= 0.0) : "The value " + totalValue + " is negative, the total value of the stock must be 0 or greater";
         return totalValue;
     }
 
@@ -65,15 +66,14 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
     }
 
     //     requires: tickerSymbol != null
+    // modifies: this
 //     effects: removes stock from the List by using the tickerSymbol,
-//              returns true if stock was removed else returns false.
-    private boolean removeStock(String tickerSymbol) {
+    private void removeStock(String tickerSymbol) {
         assert (tickerSymbol != null) : "The ticker symbol must not be null";
-        if (!stocks.containsKey(tickerSymbol)) {
+        System.out.println("Gets gere  " + tickerSymbol);
+        if (stocks.containsKey(tickerSymbol)) {
             stocks.remove(tickerSymbol);
-            return true;
-        } else {
-            return false;
+            notifyChanges();
         }
     }
 

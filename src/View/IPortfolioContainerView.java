@@ -18,5 +18,8 @@ public interface IPortfolioContainerView {
 
     void emptyTabs();
 
-    int conformationPopup(String message, String title);
+    boolean conformationPopup(String message, String title);
+
+    String getFilePath();
+
 }

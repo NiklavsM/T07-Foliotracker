@@ -11,63 +11,72 @@ public class StockHoldingTest {
     private Double amount;
     private Double sharevalue;
     private String tickerSymbol;
-    private Double noOfshares;
+    private Double shareAmount;
     private String sharename;
-
 
 
     @Before
     public void setUp() {
-        amount = 5000.00;
-        sharevalue = 4000.00;
+        sharevalue = 100.0;
         tickerSymbol = "MSFT";
-        noOfshares = 20.00;
-        sharename = "share";
-        stockholding = new StockHolding(tickerSymbol,sharename, noOfshares, sharevalue);
+        shareAmount = 0.0;
+        sharename = "sharename";
+        stockholding = new StockHolding(tickerSymbol, sharename, shareAmount, sharevalue);
 
     }
 
+    //Test buying shares
     @Test
     public void buyShares() {
-        assertTrue(amount > 0);
-        stockholding.buyShares(amount);
+        stockholding.buyShares(10.0);
+        assertEquals(new Double(1000.0), stockholding.getValueOfHolding());
 
     }
 
+    //Test setting share value
     @Test
-    public void setShareValue()  {
-        assertTrue(sharevalue > 0);
-        stockholding.setShareValue(sharevalue);
+    public void setShareValue() {
+        stockholding.buyShares(10.0);
+        stockholding.setShareValue(50.0);
+        assertTrue(stockholding.getValueOfHolding() == 500.0);
     }
 
-//    @Test
-//    public void updateValueOfHolding() {
-//    }
-
+    // Test sell all shares that stock holding has
     @Test
     public void sellShares() {
-        assertTrue(amount > 0);
-        stockholding.sellShares(amount);
+        stockholding.buyShares(40.0);
+        stockholding.sellShares(40.0);
+        assertEquals(new Double(0.0),stockholding.getValueOfHolding());
+    }
+    // Test sell more shares that stock holding has
+    @Test
+    public void sellMoreShares() {
+        stockholding.buyShares(40.0);
+        stockholding.sellShares(100.0);
+        assertTrue(stockholding.getValueOfHolding() == 0.0);
     }
 
+    //Test getting shares ticker symbol
     @Test
     public void getTickerSymbol() {
         assertEquals("MSFT", stockholding.getTickerSymbol());
     }
 
+    //Test getting number of shares
     @Test
     public void getNumberOfShares() {
-        assertEquals(noOfshares, stockholding.getNumberOfShares());
+        stockholding.buyShares(100.0);
+        assertTrue(stockholding.getNumberOfShares()==100.0);
     }
-
+//Test getting share value
     @Test
     public void getShareValue() {
         assertEquals(sharevalue, stockholding.getShareValue());
     }
-
-//    @Test
-//    public void getValueOfHolding() {
-//
-//    }
+//Tests getting shares name
+    @Test
+    public void getShareName() {
+        assertEquals(sharename, stockholding.getShareName());
+    }
 
 }
