@@ -130,7 +130,7 @@ public class PortfolioContainerView implements Observer, IPortfolioContainerView
         return (JOptionPane.showConfirmDialog(mainFrame, message, title, JOptionPane.YES_NO_OPTION)==0);
     }
 
-    public void popupErrorMessage(String errorText) {
+    public void popupMessage(String errorText) {
         JOptionPane.showMessageDialog(mainFrame, errorText);
     }
 

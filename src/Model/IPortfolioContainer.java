@@ -13,10 +13,8 @@ public interface IPortfolioContainer {
 
     boolean deletePortfolio(String portfolioName);
 
-    boolean loadFromFile(String filePath) throws IOException, ClassNotFoundException;
+    void loadFromFile(String filePath) throws IOException, ClassNotFoundException;
 
     void saveToFile(String filePath) throws IOException;
-
- //   void setChangedAndNotify();
 
 }

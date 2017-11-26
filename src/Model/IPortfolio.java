@@ -12,8 +12,6 @@ public interface IPortfolio {
 
     Map<String,IStockHolding> getStocks();
 
-    void notifyChanges();
-
     boolean sellStock(String tickerSymbol, Double amount);
 
     Double getTotalValue();

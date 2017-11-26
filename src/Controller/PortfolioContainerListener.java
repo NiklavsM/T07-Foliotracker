@@ -26,9 +26,9 @@ public class PortfolioContainerListener implements ActionListener {
             }
             return false;
         } catch (IOException e) {
-            mainView.popupErrorMessage("Failed to load the file");
+            mainView.popupMessage("Failed to load the file");
         } catch (ClassNotFoundException e) {
-            mainView.popupErrorMessage("Failed to load the file");
+            mainView.popupMessage("Failed to load the file");
         }
         return true;
     }
@@ -36,8 +36,9 @@ public class PortfolioContainerListener implements ActionListener {
     private void saveToFile() {
         try {
             portfolioContainer.saveToFile(mainView.getFilePath());
+            mainView.popupMessage("File has been saved");
         } catch (IOException e) {
-            mainView.popupErrorMessage("Failed to save the file");
+            mainView.popupMessage("Failed to save the file");
         }
     }
 
@@ -47,7 +48,7 @@ public class PortfolioContainerListener implements ActionListener {
             return;
         }
         if (!portfolioContainer.addPortfolio(s)) {
-            mainView.popupErrorMessage("Portfolio already exists");
+            mainView.popupMessage("Portfolio already exists");
         }
 
     }
@@ -72,7 +73,7 @@ public class PortfolioContainerListener implements ActionListener {
         tabCount = mainView.getTabs().getTabCount();
         for (int i = 0; i < tabCount; i++) {
             if (mainView.getTabs().getTitleAt(i).equals(s)) {
-                mainView.popupErrorMessage("Portfolio is already opened");
+                mainView.popupMessage("Portfolio is already opened");
                 mainView.getTabs().setSelectedIndex(i);
                 return;
             }

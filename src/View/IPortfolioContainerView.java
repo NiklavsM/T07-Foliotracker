@@ -8,7 +8,7 @@ public interface IPortfolioContainerView {
 
     JTabbedPane getTabs();
 
-    void popupErrorMessage(String errorText);
+    void popupMessage(String errorText);
 
     String getPortfolioNamePopup(Object[] selectionValues, String title);
 
