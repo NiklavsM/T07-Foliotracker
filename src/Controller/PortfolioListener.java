@@ -21,6 +21,10 @@ public class PortfolioListener implements ActionListener {
         Double shareAmount;
         String tickerSymbol = portfolioPanel.getBuySellTickerSymbol().getText().toLowerCase();
         try {
+            if(tickerSymbol.equals("")){
+                portfolioPanel.popupErrorMessage("Please enter the ticker symbol");
+                return;
+            }
             shareAmount = Double.valueOf(portfolioPanel.getBuySellShareAmount().getText());
             if (!portfolio.buyStock(tickerSymbol, shareAmount)) {
                 portfolioPanel.popupErrorMessage("You dont own this stock");
@@ -38,6 +42,10 @@ public class PortfolioListener implements ActionListener {
         String tickerSymbol = portfolioPanel.getAddShareTickerSymbol().getText().toLowerCase();
         String shareName = portfolioPanel.getAddShareName().getText();
         try {
+            if(tickerSymbol.equals("")){
+                portfolioPanel.popupErrorMessage("Please enter the ticker symbol");
+                return;
+            }
             if (!portfolio.addStock(tickerSymbol, shareName)) {
                 portfolioPanel.popupErrorMessage("You already own this stock");
             }
@@ -50,6 +58,10 @@ public class PortfolioListener implements ActionListener {
         Double shareAmount;
         String tickerSymbol = portfolioPanel.getBuySellTickerSymbol().getText().toLowerCase();
         try {
+            if(tickerSymbol.equals("")){
+                portfolioPanel.popupErrorMessage("Please enter the ticker symbol");
+                return;
+            }
             shareAmount = Double.valueOf(portfolioPanel.getBuySellShareAmount().getText());
         } catch (NumberFormatException ex) {
             portfolioPanel.popupErrorMessage("Sell amount has to be positive integer");

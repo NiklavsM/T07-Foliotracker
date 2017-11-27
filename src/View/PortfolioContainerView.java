@@ -192,13 +192,9 @@ public class PortfolioContainerView implements Observer, IPortfolioContainerView
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("tabs.getTabCount() " + tabs.getTabCount());
-        System.out.println("portfolioContainer.getPortfolioList().size() " + portfolioContainer.getPortfolios().size());
         if (portfolioContainer.getPortfolios().size() > tabs.getTabCount()) {
-            System.out.println("Gets here11");
             addPortfolioTab();
         }
-
         removeDeadTabs();
         enableActionButtons(portfolioContainer.getPortfolios().size() > 0 && tabs.getTabCount() > 0);
 

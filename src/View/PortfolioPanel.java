@@ -38,7 +38,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
 
         JLabel buyTickerNameLabel = new JLabel("Ticker name");
         buyTickerNameLabel.setBounds(100, 20, 100, 20);
-        addShareTickerSymbol = new TextField("MSFT", 20);
+        addShareTickerSymbol = new TextField("", 20);
         addShareTickerSymbol.setBounds(200, 20, 100, 20);
         JLabel addShareNameLabel = new JLabel("Share name");
         addShareNameLabel.setBounds(300, 20, 120, 20);
@@ -56,7 +56,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
 
         JLabel sellTickerNameLabel = new JLabel("Ticker name");
         sellTickerNameLabel.setBounds(100, 50, 100, 20);
-        buySellTickerSymbol = new TextField("MSFT", 20);
+        buySellTickerSymbol = new TextField("", 20);
         buySellTickerSymbol.setBounds(200, 50, 100, 20);
         JLabel sellAmountLabel = new JLabel("Number of shares");
         sellAmountLabel.setBounds(300, 50, 120, 20);
@@ -80,17 +80,16 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
     }
 
     private void setTotalValueLabel() {
-        totalValueLabel = new JLabel("Total portfolio value is: 0.00" );
+        totalValueLabel = new JLabel("Total portfolio value is: 0.00");
         totalValueLabel.setBounds(550, 520, 300, 20);
         add(totalValueLabel);
     }
 
     private void initializeTable() {
-        System.out.println("Initialize Table Was Called!");
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setFocusable(true);
 
-        String[] columnNames = {"Ticker Symbol","Share name", "Number Of Shares", "Price per Share", "Value of Holding"};
+        String[] columnNames = {"Ticker Symbol", "Share name", "Number Of Shares", "Price per Share", "Value of Holding"};
 
         model = new DefaultTableModel(null, columnNames) {
 
@@ -110,7 +109,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
 
     private void addStock(IStockHolding sh) {
 
-        model.addRow(new Object[]{sh.getTickerSymbol(),sh.getShareName(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
+        model.addRow(new Object[]{sh.getTickerSymbol(), sh.getShareName(), sh.getNumberOfShares(), sh.getShareValue(), sh.getValueOfHolding()});
     }
 
     public void setModel(DefaultTableModel model) {
@@ -148,8 +147,7 @@ public class PortfolioPanel extends JPanel implements Observer, IPortfolioPanel 
     @Override
     public void update(Observable o, Object arg) {
         clearTable();
-        Map<String,IStockHolding> stocks = portfolio.getStocks();
-        System.out.println("portfolio " + portfolio.getName() + " stockArray  " + stocks.size());
+        Map<String, IStockHolding> stocks = portfolio.getStocks();
         for (String name : stocks.keySet()) {
             addStock(stocks.get(name));
         }
