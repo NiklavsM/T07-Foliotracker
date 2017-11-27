@@ -25,9 +25,7 @@ public class PortfolioContainerListener implements ActionListener {
                 return true;
             }
             return false;
-        } catch (IOException e) {
-            mainView.popupMessage("Failed to load the file");
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             mainView.popupMessage("Failed to load the file");
         }
         return true;
