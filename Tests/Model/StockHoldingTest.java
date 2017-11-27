@@ -7,8 +7,9 @@ import static org.junit.Assert.*;
 
 public class StockHoldingTest {
 
-    private IStockHolding stockholding;
-    private Double amount;
+    private StockHolding stockholding;
+    private StockHolding stockholdingSame;
+    private StockHolding stockholdingSame2;
     private Double sharevalue;
     private String tickerSymbol;
     private Double shareAmount;
@@ -22,6 +23,8 @@ public class StockHoldingTest {
         shareAmount = 0.0;
         sharename = "sharename";
         stockholding = new StockHolding(tickerSymbol, sharename, shareAmount, sharevalue);
+        stockholdingSame = new StockHolding(tickerSymbol, sharename, shareAmount, sharevalue);
+        stockholdingSame2 = new StockHolding(tickerSymbol, sharename, shareAmount, sharevalue);
 
     }
 
@@ -46,8 +49,9 @@ public class StockHoldingTest {
     public void sellShares() {
         stockholding.buyShares(40.0);
         stockholding.sellShares(40.0);
-        assertEquals(new Double(0.0),stockholding.getValueOfHolding());
+        assertEquals(new Double(0.0), stockholding.getValueOfHolding());
     }
+
     // Test sell more shares that stock holding has
     @Test
     public void sellMoreShares() {
@@ -66,17 +70,67 @@ public class StockHoldingTest {
     @Test
     public void getNumberOfShares() {
         stockholding.buyShares(100.0);
-        assertTrue(stockholding.getNumberOfShares()==100.0);
+        assertTrue(stockholding.getNumberOfShares() == 100.0);
     }
-//Test getting share value
+
+    //Test getting share value
     @Test
     public void getShareValue() {
         assertEquals(sharevalue, stockholding.getShareValue());
     }
-//Tests getting shares name
+
+    //Tests getting shares name
     @Test
     public void getShareName() {
         assertEquals(sharename, stockholding.getShareName());
     }
 
+    //Tests equals methods transitivity
+    @Test
+    public void equalsTransitive() throws Exception {
+        assertTrue(stockholding.equals(stockholdingSame) && stockholdingSame.equals(stockholdingSame2) && stockholding.equals(stockholdingSame2));
+
+    }
+
+    //Tests if equals method is symmetric
+    @Test
+    public void equalsSymmetric() throws Exception {
+        assertTrue(stockholding.equals(stockholdingSame) && stockholdingSame.equals(stockholding));
+
+    }
+
+    //Tests if equals method is consistent
+    @Test
+    public void equalsConsistent() throws Exception {
+        assertTrue(stockholding.equals(stockholdingSame) && stockholding.equals(stockholdingSame));
+
+    }
+
+    //Tests if equals method is reflexive
+    @Test
+    public void equalsReflexive() throws Exception {
+        assertTrue(stockholding.equals(stockholding));
+
+    }
+
+    //Tests if portfolio is not equal to null
+    @Test
+    public void testEqualsNull() throws Exception {
+        assertFalse(stockholding.equals(null));
+    }
+
+    //Tests if portfolio is not equal to object that is not of class Portfolio
+    @Test
+    public void testNoEM() throws Exception {
+        Object o = new Object();
+        assertFalse(stockholding.equals(o));
+
+    }
+
+    //Tests if equal objects has the same hashcode
+    @Test
+    public void sameHashCode() throws Exception {
+        assertTrue(stockholding.hashCode() == stockholdingSame.hashCode());
+
+    }
 }

@@ -119,4 +119,24 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Portfolio portfolio = (Portfolio) o;
+
+        if (!stocks.equals(portfolio.stocks)) return false;
+        if (!name.equals(portfolio.name)) return false;
+        return sharePrices.equals(portfolio.sharePrices);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = stocks.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + sharePrices.hashCode();
+        return result;
+    }
 }

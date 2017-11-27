@@ -85,5 +85,27 @@ public class StockHolding implements IStockHolding, Serializable {
         return valueOfHolding;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        StockHolding that = (StockHolding) o;
+
+        if (!tickerSymbol.equals(that.tickerSymbol)) return false;
+        if (!shareName.equals(that.shareName)) return false;
+        if (!numberOfShares.equals(that.numberOfShares)) return false;
+        if (!shareValue.equals(that.shareValue)) return false;
+        return valueOfHolding.equals(that.valueOfHolding);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tickerSymbol.hashCode();
+        result = 31 * result + shareName.hashCode();
+        result = 31 * result + numberOfShares.hashCode();
+        result = 31 * result + shareValue.hashCode();
+        result = 31 * result + valueOfHolding.hashCode();
+        return result;
+    }
 }
