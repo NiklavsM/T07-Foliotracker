@@ -39,7 +39,7 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
         return false;
     }
 
-    //    effects: updates the share values.
+
     void updateShareValues() {
         for (String tickerSymbol : stocks.keySet()) {
             stocks.get(tickerSymbol).setShareValue(sharePrices.get(tickerSymbol));
@@ -63,9 +63,6 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
         notifyObservers();
     }
 
-    //     requires: tickerSymbol != null
-    //     modifies: this
-    //     effects: removes stock from the stock map by using the tickerSymbol,
     private void removeStock(String tickerSymbol) {
         assert (tickerSymbol != null) : "The ticker symbol must not be null";
         if (stocks.containsKey(tickerSymbol)) {

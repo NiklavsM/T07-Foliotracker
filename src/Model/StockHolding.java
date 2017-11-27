@@ -38,9 +38,7 @@ public class StockHolding implements IStockHolding, Serializable {
         this.shareValue = shareValue;
         updateValueOfHolding();
     }
-
-    //      modifies: this
-    //      effects: Updates value of holding.
+    
     private void updateValueOfHolding() {
         assert (shareValue >= 0) : "The shareValue of " + shareValue + " must be equal or bigger than 0";
         assert (numberOfShares >= 0) : "The numberOfShares of " + numberOfShares + " must be equal or bigger than 0";

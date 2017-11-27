@@ -19,9 +19,6 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return new ConcurrentHashMap<>(portfolioMap);
     }
 
-    //      requires: tickerSymbol != null && value != null
-    //      modifies: this
-    //      effects: Sets the specified share price
     void setSharePrice(String tickerSymbol, Double value) {
         assert (tickerSymbol != null) : "The ticker symbol must not be null";
         assert (value != null) : "The value must not be null";
@@ -46,8 +43,6 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
         return false;
     }
 
-    //      modifies: this
-    //      effects: Updates all portfolios share prices.
     void updateShareValues() {
         for (String key : portfolioMap.keySet()) {
             portfolioMap.get(key).updateShareValues();
