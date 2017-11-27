@@ -22,9 +22,8 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     void setSharePrice(String tickerSymbol, Double value) {
         assert (tickerSymbol != null) : "The ticker symbol must not be null";
         assert (value != null) : "The value must not be null";
-
+        assert (value >= 0.0) : "Value: " + value + " Value has to be bigger or equal to 0";
         sharePrices.put(tickerSymbol, value);
-
     }
 
 
