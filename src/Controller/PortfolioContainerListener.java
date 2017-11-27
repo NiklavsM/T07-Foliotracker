@@ -19,7 +19,7 @@ public class PortfolioContainerListener implements ActionListener {
     private boolean loadFromFile() {
         String path;
         try {
-            path = mainView.getFilePath();
+            path = mainView.getOpenFilePath();
             if (path != null) {
                 portfolioContainer.loadFromFile(path);
                 return true;
@@ -36,9 +36,9 @@ public class PortfolioContainerListener implements ActionListener {
     private void saveToFile() {
         String path;
         try {
-            path = mainView.getFilePath();
+            path = mainView.getSaveFilePath();
             if (path != null) {
-                portfolioContainer.saveToFile(mainView.getFilePath());
+                portfolioContainer.saveToFile(path);
                 mainView.popupMessage("File has been saved");
             }
         } catch (IOException e) {

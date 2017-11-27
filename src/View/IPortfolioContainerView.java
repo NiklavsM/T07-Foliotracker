@@ -20,6 +20,8 @@ public interface IPortfolioContainerView {
 
     boolean conformationPopup(String message, String title);
 
-    String getFilePath();
+    String getOpenFilePath();
+
+    String getSaveFilePath();
 
 }

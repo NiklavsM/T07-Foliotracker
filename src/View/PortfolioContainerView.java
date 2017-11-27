@@ -134,16 +134,25 @@ public class PortfolioContainerView implements Observer, IPortfolioContainerView
         JOptionPane.showMessageDialog(mainFrame, errorText);
     }
 
-    public String getFilePath() {
+    public String getOpenFilePath() {
 
         JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
+        int result = fileChooser.showOpenDialog(mainFrame);
         if (result == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile().getPath();
         }
         return null;
     }
 
+    public String getSaveFilePath() {
+
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(mainFrame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile().getPath();
+        }
+        return null;
+    }
     private void enableActionButtons(boolean enable) {
         closeButton.setVisible(enable);
         deleteButton.setVisible(enable);
