@@ -34,9 +34,13 @@ public class PortfolioContainerListener implements ActionListener {
     }
 
     private void saveToFile() {
+        String path;
         try {
-            portfolioContainer.saveToFile(mainView.getFilePath());
-            mainView.popupMessage("File has been saved");
+            path = mainView.getFilePath();
+            if (path != null) {
+                portfolioContainer.saveToFile(mainView.getFilePath());
+                mainView.popupMessage("File has been saved");
+            }
         } catch (IOException e) {
             mainView.popupMessage("Failed to save the file");
         }
