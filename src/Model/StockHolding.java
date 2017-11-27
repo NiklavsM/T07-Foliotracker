@@ -23,8 +23,6 @@ public class StockHolding implements IStockHolding, Serializable {
     //      modifies: this
     //      effects: buy share using the amount and update the value.
     public void buyShares(Double amount) {
-        assert (amount != null) : "The amount cannot be null";
-        assert (amount > 0) : "The amount of " + amount + " must be a positive value";
         numberOfShares += amount;
         updateValueOfHolding();
     }
@@ -33,12 +31,10 @@ public class StockHolding implements IStockHolding, Serializable {
     //      modifies: this
     //      effects: sets new shareValue and updates total amount of stock holding
     public void setShareValue(Double shareValue) {
-        assert (shareValue != null) : " The shareValue cannot be null";
-        assert (shareValue >= 0) : " The shareValue = " + shareValue + "; shareValue must be bigger or equal to 0";
         this.shareValue = shareValue;
         updateValueOfHolding();
     }
-    
+
     private void updateValueOfHolding() {
         assert (shareValue >= 0) : "The shareValue of " + shareValue + " must be equal or bigger than 0";
         assert (numberOfShares >= 0) : "The numberOfShares of " + numberOfShares + " must be equal or bigger than 0";
@@ -50,8 +46,6 @@ public class StockHolding implements IStockHolding, Serializable {
     //      modifies: this
     //      effects: sell share using the amount and update the value.
     public void sellShares(Double amount) {
-        assert (amount != null) : "The amount cannot be null";
-        assert (amount > 0) : "The amount of " + amount + " must be a positive value";
         if ((numberOfShares -= amount) < 0) {
             numberOfShares = 0.0;
         }

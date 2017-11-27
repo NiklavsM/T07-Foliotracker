@@ -22,10 +22,6 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
 //             if stock is not in portfolio returns false.
     public boolean sellStock(String tickerSymbol, Double amount) {
 
-        assert (amount != null) : "The amount cannot be null";
-        assert (amount > 0) : "The amount of " + amount + " is negative, it must be a positive value";
-        assert (tickerSymbol != null) : "The ticker symbol is null, it must contain a value";
-
         StockHolding stockHolding = stocks.get(tickerSymbol);
         if (stockHolding != null) {
             if (Double.compare(stockHolding.getNumberOfShares() - amount, 0.0) < 0) {
@@ -77,8 +73,6 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
     //              returns true if the stock was added else if stock map already contained stock returns false,
     //              throws WebsiteDataException if fails to get stock price
     public boolean addStock(String tickerName, String shareName) throws WebsiteDataException {
-        assert (tickerName != null) : "The ticker name must not be null";
-        assert (shareName != null) : "The share name must not be null";
         if (stocks.containsKey(tickerName)) {
             return false;
         } else {
@@ -96,9 +90,6 @@ public class Portfolio extends Observable implements IPortfolio, Serializable {
     //                returns false if there is no stock with this ticker symbol in portfolio
     public boolean buyStock(String tickerName, Double shareAmount) {
 
-        assert (tickerName != null) : "The ticker symbol must not be null";
-        assert (shareAmount != null) : "The ticker symbol must not be null";
-        assert (shareAmount > 0) : "The ticker symbol" + "" + shareAmount + "" + "" + "must be greater than 0";
         StockHolding stockHolding = stocks.get(tickerName);
         if (stockHolding != null) {
             stockHolding.buyShares(shareAmount);

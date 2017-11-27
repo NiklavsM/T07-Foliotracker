@@ -33,7 +33,6 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     //      effects: returns true if portfolio is added else returns false if portfolio with this name already exists
     public boolean addPortfolio(String portfolio) {
 
-        assert (portfolio != null) : "Portfolio must not be null";
         if (portfolioMap.get(portfolio) == null) {
             Portfolio newPortfolio1 = new Portfolio(portfolio, sharePrices);
             portfolioMap.put(portfolio, newPortfolio1);
@@ -83,7 +82,6 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     //      effects: returns true if the portfolio is removed from the portfolioMap else if portfolioMap didn't contain portfolio returns false.
     public boolean deletePortfolio(String name) {
 
-        assert (name != null) : "The name must not be null";
         if (portfolioMap.containsKey(name)) {
             portfolioMap.remove(name);
             setChangedAndNotify();
@@ -95,7 +93,6 @@ public class PortfolioContainer extends Observable implements IPortfolioContaine
     //      requires: name != null
     //      effects: returns true if the portfolioMap contains this portfolio else returns false.
     public boolean containsPortfolio(String name) {
-        assert (name != null) : "The name must not contain an null value";
         return portfolioMap.containsKey(name);
     }
 
